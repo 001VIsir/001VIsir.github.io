@@ -1,4 +1,4 @@
-/* 鼠标特效：爱心跟随 + Canvas 烟花 */
+/* 鼠标特效：爱心跟随 + Canvas 烟花 + 桌宠 */
 (function() {
   var heartTrail = [];
 
@@ -105,7 +105,6 @@
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    /* 画粒子 */
     for (var i = particles.length - 1; i >= 0; i--) {
       var p = particles[i];
       p.x += p.vx;
@@ -129,7 +128,6 @@
       ctx.restore();
     }
 
-    /* 画中心闪光 */
     for (var j = fireworks.length - 1; j >= 0; j--) {
       var f = fireworks[j];
       if (f.flash.alpha > 0) {
@@ -155,4 +153,102 @@
   }
 
   draw();
+
+  /* ========== CSS 桌宠（Hiyori 风格女孩） ========== */
+  (function() {
+    var style = document.createElement('style');
+    style.textContent = [
+      '#pet-container{position:fixed;bottom:0;right:0;z-index:9999;width:180px;height:280px;pointer-events:none}',
+
+      '#pet-body{position:absolute;bottom:0;right:20px;width:120px;height:180px;background:linear-gradient(135deg,#fce4ec 0%,#f8bbd0 100%);border-radius:60px 60px 40px 40px;animation:pet-bounce 3s ease-in-out infinite}',
+
+      '#pet-head{position:absolute;bottom:130px;right:30px;width:90px;height:85px;background:linear-gradient(145deg,#fff5f8,#fce4ec);border-radius:50% 50% 45% 45%;animation:pet-float 3s ease-in-out infinite}',
+
+      '#pet-hair{position:absolute;bottom:185px;right:22px;width:106px;height:60px;background:linear-gradient(180deg,#5a3d2b,#8b5e3c);border-radius:53px 53px 0 0;animation:pet-float 3s ease-in-out infinite}',
+
+      '#pet-hair-side{position:absolute;bottom:130px;width:25px;height:70px;background:linear-gradient(180deg,#8b5e3c,#6d4c41);border-radius:0 0 15px 15px;animation:pet-bounce 3s ease-in-out infinite}',
+
+      '#pet-eye{position:absolute;bottom:170px;width:18px;height:22px;background:#2d1b0e;border-radius:50%;animation:pet-look 6s ease-in-out infinite;transition:transform 0.1s}',
+
+      '#pet-eye::after{content:"";position:absolute;top:5px;left:4px;width:7px;height:7px;background:#fff;border-radius:50%}',
+
+      '#pet-blush{position:absolute;bottom:158px;width:20px;height:12px;background:rgba(255,105,135,0.4);border-radius:50%}',
+
+      '#pet-mouth{position:absolute;bottom:152px;width:8px;height:4px;border-bottom:2px solid #d4817a;border-radius:0 0 4px 4px}',
+
+      '#pet-arm{position:absolute;bottom:80px;width:18px;height:45px;background:linear-gradient(180deg,#f8bbd0,#f48fb1);border-radius:10px;transform-origin:top center}',
+
+      '#pet-toggle{position:fixed;bottom:20px;right:20px;z-index:10000;background:linear-gradient(135deg,#ff6b9d,#ff8a80);color:#fff;border:none;border-radius:25px;padding:8px 18px;cursor:pointer;font-size:14px;box-shadow:0 4px 15px rgba(255,107,157,0.4);pointer-events:auto;transition:all .3s;font-weight:500}',
+
+      '#pet-toggle:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(255,107,157,0.5)}',
+
+      '@keyframes pet-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}',
+      '@keyframes pet-float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-5px) rotate(1deg)}}',
+      '@keyframes pet-look{0%,45%,55%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}',
+      '@keyframes pet-arm-wave{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-45deg)}}'
+    ].join('');
+    document.head.appendChild(style);
+
+    var container = document.createElement('div');
+    container.id = 'pet-container';
+
+    var bodyHTML = [
+      '<div id="pet-body"></div>',
+      '<div id="pet-hair"></div>',
+      '<div id="pet-hair-side" style="right:115px;transform:scaleX(-1)"></div>',
+      '<div id="pet-hair-side" style="right:0"></div>',
+      '<div id="pet-head"></div>',
+      '<div id="pet-eye" style="right:55px"></div>',
+      '<div id="pet-eye" style="right:35px"></div>',
+      '<div id="pet-blush" style="right:58px"></div>',
+      '<div id="pet-blush" style="right:38px"></div>',
+      '<div id="pet-mouth" style="right:47px"></div>',
+      '<div id="pet-arm" style="right:100px;animation:pet-arm-wave 2s ease-in-out infinite"></div>',
+      '<div id="pet-arm" style="right:0;animation:pet-arm-wave 2s ease-in-out 1s infinite"></div>'
+    ].join('');
+
+    container.innerHTML = bodyHTML;
+    document.body.appendChild(container);
+
+    var btn = document.createElement('button');
+    btn.id = 'pet-toggle';
+    btn.textContent = '隐藏桌宠';
+    btn.onclick = function() {
+      if (container.style.display === 'none') {
+        container.style.display = '';
+        btn.textContent = '隐藏桌宠';
+      } else {
+        container.style.display = 'none';
+        btn.textContent = '显示桌宠';
+      }
+    };
+    document.body.appendChild(btn);
+
+    /* 眼睛跟随鼠标 */
+    var eyeL = container.querySelector('#pet-eye');
+    var eyeR = container.querySelectorAll('#pet-eye')[1];
+    var lookX = 0, lookY = 0;
+    var targetX = 0, targetY = 0;
+
+    document.addEventListener('mousemove', function(e) {
+      targetX = (e.clientX / window.innerWidth - 0.5) * 6;
+      targetY = (e.clientY / window.innerHeight - 0.5) * 4;
+    });
+
+    setInterval(function() {
+      lookX += (targetX - lookX) * 0.15;
+      lookY += (targetY - lookY) * 0.15;
+      eyeL.style.transform = 'translate(' + lookX + 'px,' + lookY + 'px)';
+      eyeR.style.transform = 'translate(' + lookX + 'px,' + lookY + 'px)';
+    }, 16);
+
+    /* 随机动作 */
+    var petBody = container.querySelector('#pet-body');
+    var animations = ['pet-bounce', 'pet-float'];
+    setInterval(function() {
+      var anim = animations[Math.floor(Math.random() * animations.length)];
+      petBody.style.animation = anim + ' 3s ease-in-out infinite';
+    }, 5000);
+
+  })();
 })();
