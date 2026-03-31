@@ -4,25 +4,6 @@
   
   
   <entry>
-    <title>你好，世界</title>
-    <link href="/2026/03/30/hello-world/"/>
-    <url>/2026/03/30/hello-world/</url>
-    
-    <content type="html"><![CDATA[<p>欢迎来到我的技术博客！</p><p>在这里，我会记录学习和工作中的技术笔记、踩坑经验和心得体会。</p><h2 id="为什么写博客？"><a href="#为什么写博客？" class="headerlink" title="为什么写博客？"></a>为什么写博客？</h2><ul><li>整理思路，加深理解</li><li>方便日后回顾</li><li>也许能帮助到有同样问题的同学</li></ul><h2 id="计划写的内容"><a href="#计划写的内容" class="headerlink" title="计划写的内容"></a>计划写的内容</h2><ul><li>后端开发相关技术</li><li>数据库与缓存</li><li>架构设计</li><li>工具效率</li></ul><p>让我们一起进步！</p><span id="more"></span>]]></content>
-    
-    
-    
-    <tags>
-      
-      <tag>随笔</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>微服务架构入门：什么是微服务</title>
     <link href="/2025/11/20/2025-11-20-microservices-intro/"/>
     <url>/2025/11/20/2025-11-20-microservices-intro/</url>
