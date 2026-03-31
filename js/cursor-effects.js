@@ -82,10 +82,10 @@
     this.color = fireworkColors[Math.floor(Math.random() * fireworkColors.length)];
     this.flash = { x: x, y: y, alpha: 1, radius: 3 };
 
-    var count = 60 + Math.floor(Math.random() * 40);
+    var count = 15 + Math.floor(Math.random() * 10);
     for (var i = 0; i < count; i++) {
-      var angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.2;
-      var speed = 3 + Math.random() * 8;
+      var angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
+      var speed = 1.5 + Math.random() * 3;
       particles.push(new Particle(x, y, angle, speed, this.color));
     }
   }
