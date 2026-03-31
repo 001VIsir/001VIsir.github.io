@@ -881,29 +881,19 @@
 
 <!-- Live2D 桌宠 -->
 <link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@master/dist/waifu.min.css">
-<script>
-// Load Live2D widget with Hiyori model
-var live2d_path = "https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0-rc.6/dist/";
-var modelPath = "https://fastly.jsdelivr.net/gh/Live2D/CubismWebSamples/Samples/Resources/Hiyori/Hiyori.model3.json";
-(async function(){
-function loadScript(src) {
-  return new Promise(function(r,c){var t=document.createElement("script");t.src=src;t.onload=r;t.onerror=c;document.head.appendChild(t)});
-}
-function loadCss(href) {
-  return new Promise(function(r,c){var l=document.createElement("link");l.rel="stylesheet";l.href=href;l.onload=r;l.onerror=c;document.head.appendChild(l)});
-}
-await loadCss(live2d_path + "waifu.css");
-await loadScript("https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js");
-await loadScript(live2d_path + "live2d.min.js");
-await loadScript(live2d_path + "waifu-tips.js");
-window.initWidget && window.initWidget({
-  waifuPath: live2d_path + "waifu-tips.json",
-  models: [modelPath],
-  tools: ["hitokoto","switch-model","switch-texture","photo","info","quit"],
+<script type="module">
+import "https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js";
+import "https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0-rc.6/dist/live2d.min.js";
+import { initWidget } from "https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0-rc.6/dist/waifu-tips.js";
+const HIYORI_URL = "https://fastly.jsdelivr.net/gh/Live2D/CubismWebSamples/Samples/Resources/Hiyori/Hiyori.model3.json";
+initWidget({
+  waifuPath: "https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0-rc.6/dist/waifu-tips.json",
+  cdnPath: "https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0-rc.6/dist/",
+  cubism5Path: "https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js",
+  tools: [],
   drag: false,
   logLevel: "warn"
 });
-})();
 </script>
 </body>
 </html>
