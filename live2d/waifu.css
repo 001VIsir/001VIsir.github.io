@@ -1,0 +1,29 @@
+/* Live2D 桌宠样式 - 固定在右下角 */
+#waifu {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+#waifu-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10000;
+    background: #ff6b9d;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    pointer-events: auto;
+    transition: opacity 0.3s;
+    box-shadow: 0 2px 8px rgba(255, 107, 157, 0.4);
+}
+
+#waifu-toggle:hover {
+    opacity: 0.85;
+}
