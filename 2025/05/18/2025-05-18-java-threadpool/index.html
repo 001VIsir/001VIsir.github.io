@@ -877,46 +877,22 @@
     <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
 
-<!-- Live2D 桌宠 (pixi-live2d-display) -->
+<!-- Live2D 桌宠 -->
 <link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@master/dist/waifu.min.css">
-<div id="waifu" style="position:fixed;bottom:0;right:0;z-index:9999;pointer-events:none"></div>
-<canvas id="live2d-canvas" width="200" height="300" style="position:fixed;bottom:0;right:0;z-index:9998;pointer-events:none"></canvas>
-<script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/index.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@master/autoload.js"></script>
 <script>
-(async function() {
-  window.PIXI = PIXI;
-  var canvas = document.getElementById("live2d-canvas");
-  var app = new PIXI.Application({
-    view: canvas,
-    width: 200,
-    height: 300,
-    transparent: true
-  });
-  var modelUrl = "https://cdn.jsdelivr.net/gh/Live2D/CubismWebSamples@develop/Samples/Resources/Mao/Mao.model3.json";
-  try {
-    var model = await PIXI.live2d.Live2DModel.from(modelUrl, { autoInteract: false });
-    model.anchor.set(0.5, 1);
-    model.position.set(100, 300);
-    model.scale.set(0.28);
-    app.stage.addChild(model);
-    // Eye tracking - Mao has ParamAngleX and ParamAngleY for eye/head movement
-    document.addEventListener("mousemove", function(e) {
-      var tx = (e.clientX / window.innerWidth  - 0.5) *  20;
-      var ty = (e.clientY / window.innerHeight - 0.5) * -15;
-      if (model.internalModel) {
-        var m = model.internalModel;
-        if (m.tracking) m.tracking(
-          { x: tx, y: ty }
-        );
-      }
-    });
-  } catch(err) {
-    console.error("Live2D model load failed:", err);
-  }
-})();
+  live2d_settings = {
+    modelAPI: "//live2d.fghrsh.net/api/",
+    modelResources: "//live2d.fghrsh.net/model/",
+    models: {
+      "fab": "model://fab_t02.model3.json",
+      "hibiki": "model://hibiki/hibiki.model3.json",
+      "hijiki": "model://hijiki/hijiki.model3.json"
+    },
+    waifuPath: "https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@master/waifu-tips.json",
+    cdnPath: "https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@master/",
+    tools: []
+  };
 </script>
 </body>
 </html>
