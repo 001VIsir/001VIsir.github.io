@@ -906,27 +906,27 @@
   </noscript>
 
 <!-- Live2D 桌宠 -->
-<style>
-#live2d-waifu{position:fixed;bottom:0;right:0;z-index:9999;pointer-events:none;transition:opacity .3s}
-#live2d-canvas{position:absolute;bottom:0;right:0;width:180px!important;height:270px!important;pointer-events:none}
-#live2d-btn{position:fixed;bottom:20px;right:20px;z-index:10000;background:#ff6b9d;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:14px;box-shadow:0 2px 8px rgba(255,107,157,.4);pointer-events:auto}
-#live2d-btn:hover{opacity:.85}
-</style>
-<div id="live2d-waifu"><canvas id="live2d-canvas"></canvas></div>
-<button id="live2d-btn">隐藏</button>
+<script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.8/dist/browser/pixi.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/index.js"></script>
 <script>
 (function(){
-var waifu=document.getElementById("live2d-waifu");
-var btn=document.getElementById("live2d-btn");
-var canvas=document.getElementById("live2d-canvas");
-btn.onclick=function(){if(waifu.style.display==="none"){waifu.style.display="";btn.textContent="隐藏"}else{waifu.style.display="none";btn.textContent="看板娘"}};
-(async function(){
+var canvas=document.createElement("canvas");
+canvas.id="live2d-canvas";
+canvas.width=200;canvas.height=300;
+canvas.style.cssText="position:fixed;bottom:0;right:0;width:180px;height:270px;pointer-events:none;z-index:9999";
+document.body.appendChild(canvas);
+var btn=document.createElement("button");
+btn.textContent="隐藏";
+btn.style.cssText="position:fixed;bottom:20px;right:20px;z-index:10000;background:#ff6b9d;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:14px;box-shadow:0 2px 8px rgba(255,107,157,.4)";
+var visible=true;
+btn.onclick=function(){visible=!visible;canvas.style.display=visible?"":"none";btn.textContent=visible?"隐藏":"看板娘";};
+document.body.appendChild(btn);
+function initLive2D(){
+if(typeof PIXI=="undefined"){setTimeout(initLive2D,100);return;}
+if(typeof PIXI.live2d=="undefined"){setTimeout(initLive2D,100);return;}
 try{
-await new Promise(function(r,c){var t=document.createElement("script");t.src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js";t.onload=function(){r()};t.onerror=function(){c()};document.head.appendChild(t)});
-await new Promise(function(r,c){var t=document.createElement("script");t.src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.8/dist/browser/pixi.min.js";t.onload=function(){r()};t.onerror=function(){c()};document.head.appendChild(t)});
-await new Promise(function(r,c){var t=document.createElement("script");t.src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/index.js";t.onload=function(){r()};t.onerror=function(){c()};document.head.appendChild(t)});
 var app=new PIXI.Application({view:canvas,width:180,height:270,transparent:true,autoDensity:true,resolution:window.devicePixelRatio||1});
-var model=PIXI.live2d.Model.from("https://fastly.jsdelivr.net/gh/Live2D/CubismWebSamples/Samples/Resources/Hiyori/Hiyori.model3.json",{autoInteract:true});
+PIXI.live2d.Model.from("https://fastly.jsdelivr.net/gh/Live2D/CubismWebSamples/Samples/Resources/Hiyori/Hiyori.model3.json").then(function(model){
 model.scale.set(0.15);
 model.anchor.set(0.5,1);
 model.position.set(90,270);
@@ -938,14 +938,14 @@ var cm=model.internalModel.coreModel;
 var rect=canvas.getBoundingClientRect();
 var relX=(e.clientX-rect.left)/rect.width-0.5;
 var relY=(e.clientY-rect.top)/rect.height-0.5;
-var ix=cm.getParameterIndex("ParamAngleX");
-var iy=cm.getParameterIndex("ParamAngleY");
-if(ix>=0)cm.setParameterValueById(ix,relX*15);
-if(iy>=0)cm.setParameterValueById(iy,relY*8);
+cm.setParameterValueById(cm.getParameterIndex("ParamAngleX"),relX*15);
+cm.setParameterValueById(cm.getParameterIndex("ParamAngleY"),relY*8);
 }catch(ee){}
 });
-}catch(e){console.warn("Live2D init error:",e)}
-})();
+}).catch(function(e){console.error("Live2D model error:",e);});
+}catch(e){console.error("Live2D init error:",e);}
+}
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",initLive2D);}else{initLive2D();}
 })();
 </script>
 </body>

@@ -51,7 +51,6 @@
   document.addEventListener('click', function(e) {
     heartTrail.forEach(function(item) { item.el.remove(); });
     heartTrail = [];
-    fire fireworks at click position
     fireworks.push(new Firework(e.clientX, e.clientY));
   });
 
