@@ -568,9 +568,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/03/05/2025-03-05-redis-distributed-lock/" title="Redis 如何实现分布式锁">
+                      <a href="/2025/02/14/2025-02-14-spring-transaction-failure/" title="@Transactional 失效的几种场景">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Redis 如何实现分布式锁</span>
+                        <span class="hidden-mobile">@Transactional 失效的几种场景</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -913,5 +913,39 @@
   <noscript>
     <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
+
+<!-- Live2D 桌宠 -->
+<script src="https://fastly.jsdelivr.net/npm/live2d-widget@3.1.4/dist/waifu.css"></script>
+<script>
+(function(){
+var waifu=document.createElement("div");waifu.id="waifu";waifu.style.cssText="position:fixed;bottom:0;right:0;z-index:9999;pointer-events:none;";document.body.appendChild(waifu);
+var canvas=document.createElement("canvas");canvas.id="live2d-canvas";canvas.setAttribute("width","200");canvas.setAttribute("height","300");canvas.style.cssText="position:absolute;bottom:0;right:0;width:200px!important;height:300px!important;pointer-events:none;";waifu.appendChild(canvas);
+(async function(){
+try{
+await new Promise(function(r,c){var t=document.createElement("link");t.rel="stylesheet";t.href="https://fastly.jsdelivr.net/npm/live2d-widget@3.1.4/dist/waifu.css";t.onload=function(){r()};t.onerror=function(){c()};document.head.appendChild(t);});
+await new Promise(function(r,c){var t=document.createElement("script");t.src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js";t.onload=function(){r()};t.onerror=function(){c()};document.head.appendChild(t);});
+await new Promise(function(r,c){var t=document.createElement("script");t.src="https://fastly.jsdelivr.net/npm/live2d-widget@3.1.4/dist/live2d.min.js";t.onload=function(){r()};t.onerror=function(){c()};document.head.appendChild(t);});
+await new Promise(function(r,c){var t=document.createElement("script");t.src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/index.js";t.onload=function(){r()};t.onerror=function(){c()};document.head.appendChild(t);});
+var app=new PIXI.Application({view:canvas,width:200,height:300,transparent:true,autoDensity:true,resolution:window.devicePixelRatio||1});
+var model=PIXI.live2d.Model.from("https://fastly.jsdelivr.net/gh/Live2D/CubismWebSamples/Samples/Resources/Hiyori/Hiyori.model3.json",{autoInteract:true});
+model.scale.set(0.18);model.anchor.set(0.5,1);model.position.set(0.5,1);app.stage.addChild(model);
+document.addEventListener("mousemove",function(e){
+if(!model.internalModel)return;
+try{
+var cm=model.internalModel.coreModel;
+var rect=canvas.getBoundingClientRect();
+var relX=(e.clientX-rect.left)/rect.width-0.5;
+var relY=(e.clientY-rect.top)/rect.height-0.5;
+var ix=cm.getParameterIndex("ParamAngleX");
+var iy=cm.getParameterIndex("ParamAngleY");
+if(ix>=0)cm.setParameterValueById(ix,relX*15);
+if(iy>=0)cm.setParameterValueById(iy,relY*8);
+}catch(ee){}
+});
+}catch(e){console.warn("Live2D error:",e);}
+var btn=document.createElement("button");btn.id="waifu-toggle";btn.textContent="隐藏";btn.style.cssText="position:fixed;bottom:20px;right:20px;z-index:10000;background:#ff6b9d;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:14px;box-shadow:0 2px 8px rgba(255,107,157,0.4);pointer-events:auto;";btn.onclick=function(){if(waifu.style.display==="none"){waifu.style.display="";btn.textContent="隐藏";}else{waifu.style.display="none";btn.textContent="看板娘";}};document.body.appendChild(btn);
+})();
+})();
+</script>
 </body>
 </html>

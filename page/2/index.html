@@ -333,6 +333,69 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2025/02/14/2025-02-14-spring-transaction-failure/" target="_self">
+          @Transactional 失效的几种场景
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/14/2025-02-14-spring-transaction-failure/" target="_self">
+        <div>
+          前言Spring 的 @Transactional 是我们最常用的声明式事务控制，但很多时候它会悄悄失效，导致数据不一致。了解哪些场景会导致事务失效，是写出正确业务代码的基础。 1. 方法内部调用（自调用）这是最常见的事务失效原因。 1234567891011121314@Servicepublic class OrderService &#123;    // 走 Spring 代理，事务生效
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-02-14 11:00" pubdate>
+              2025-02-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/" class="category-chain-item">后端技术</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Spring/">#Spring</a>
+            
+              <a href="/tags/%E4%BA%8B%E5%8A%A1/">#事务</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2025/01/08/2025-01-08-jvm-gc/" target="_self">
           垃圾回收算法详解
         </a>
@@ -703,9 +766,9 @@
             
               <a href="/tags/Redis/">#Redis</a>
             
-              <a href="/tags/%E7%BC%93%E5%AD%98/">#缓存</a>
-            
               <a href="/tags/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/">#后端技术</a>
+            
+              <a href="/tags/%E7%BC%93%E5%AD%98/">#缓存</a>
             
           </div>
         
@@ -902,69 +965,6 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/20/2024-02-20-synchronized-vs-reentrantlock/" target="_self">
-          synchronized 和 ReentrantLock 的区别
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/20/2024-02-20-synchronized-vs-reentrantlock/" target="_self">
-        <div>
-          前言多线程编程中，锁是控制并发访问的核心手段。Java 中最常用的两把锁就是 synchronized 和 ReentrantLock，它们有什么区别？什么时候该用哪个？ 基本对比   特性 synchronized ReentrantLock    底层实现 JVM 内置关键字 JDK 层面的类   锁粒度 粗粒度（对象&#x2F;类） 精确到代码块   释放方式 自动释放 必须手动 unloc
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-20 14:00" pubdate>
-              2024-02-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/" class="category-chain-item">后端技术</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Java/">#Java</a>
-            
-              <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">#并发编程</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
@@ -1093,5 +1093,39 @@
   <noscript>
     <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
+
+<!-- Live2D 桌宠 -->
+<script src="https://fastly.jsdelivr.net/npm/live2d-widget@3.1.4/dist/waifu.css"></script>
+<script>
+(function(){
+var waifu=document.createElement("div");waifu.id="waifu";waifu.style.cssText="position:fixed;bottom:0;right:0;z-index:9999;pointer-events:none;";document.body.appendChild(waifu);
+var canvas=document.createElement("canvas");canvas.id="live2d-canvas";canvas.setAttribute("width","200");canvas.setAttribute("height","300");canvas.style.cssText="position:absolute;bottom:0;right:0;width:200px!important;height:300px!important;pointer-events:none;";waifu.appendChild(canvas);
+(async function(){
+try{
+await new Promise(function(r,c){var t=document.createElement("link");t.rel="stylesheet";t.href="https://fastly.jsdelivr.net/npm/live2d-widget@3.1.4/dist/waifu.css";t.onload=function(){r()};t.onerror=function(){c()};document.head.appendChild(t);});
+await new Promise(function(r,c){var t=document.createElement("script");t.src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js";t.onload=function(){r()};t.onerror=function(){c()};document.head.appendChild(t);});
+await new Promise(function(r,c){var t=document.createElement("script");t.src="https://fastly.jsdelivr.net/npm/live2d-widget@3.1.4/dist/live2d.min.js";t.onload=function(){r()};t.onerror=function(){c()};document.head.appendChild(t);});
+await new Promise(function(r,c){var t=document.createElement("script");t.src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/index.js";t.onload=function(){r()};t.onerror=function(){c()};document.head.appendChild(t);});
+var app=new PIXI.Application({view:canvas,width:200,height:300,transparent:true,autoDensity:true,resolution:window.devicePixelRatio||1});
+var model=PIXI.live2d.Model.from("https://fastly.jsdelivr.net/gh/Live2D/CubismWebSamples/Samples/Resources/Hiyori/Hiyori.model3.json",{autoInteract:true});
+model.scale.set(0.18);model.anchor.set(0.5,1);model.position.set(0.5,1);app.stage.addChild(model);
+document.addEventListener("mousemove",function(e){
+if(!model.internalModel)return;
+try{
+var cm=model.internalModel.coreModel;
+var rect=canvas.getBoundingClientRect();
+var relX=(e.clientX-rect.left)/rect.width-0.5;
+var relY=(e.clientY-rect.top)/rect.height-0.5;
+var ix=cm.getParameterIndex("ParamAngleX");
+var iy=cm.getParameterIndex("ParamAngleY");
+if(ix>=0)cm.setParameterValueById(ix,relX*15);
+if(iy>=0)cm.setParameterValueById(iy,relY*8);
+}catch(ee){}
+});
+}catch(e){console.warn("Live2D error:",e);}
+var btn=document.createElement("button");btn.id="waifu-toggle";btn.textContent="隐藏";btn.style.cssText="position:fixed;bottom:20px;right:20px;z-index:10000;background:#ff6b9d;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:14px;box-shadow:0 2px 8px rgba(255,107,157,0.4);pointer-events:auto;";btn.onclick=function(){if(waifu.style.display==="none"){waifu.style.display="";btn.textContent="隐藏";}else{waifu.style.display="none";btn.textContent="看板娘";}};document.body.appendChild(btn);
+})();
+})();
+</script>
 </body>
 </html>

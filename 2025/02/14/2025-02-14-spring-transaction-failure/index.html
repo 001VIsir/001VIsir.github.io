@@ -19,23 +19,23 @@
   <meta name="author" content="你的名字">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前言建了索引但查询没走索引，这是 MySQL 开发中很常见的问题。了解什么情况下索引会失效，是优化 SQL 的基础。 1. 使用左模糊查询 %xxx12345-- 索引失效SELECT * FROM users WHERE name LIKE &#x27;%visir&#x27;;-- 索引生效（尽量使用右模糊）SELECT * FROM users WHERE name LIKE &#x27;v">
+    <meta name="description" content="前言Spring 的 @Transactional 是我们最常用的声明式事务控制，但很多时候它会悄悄失效，导致数据不一致。了解哪些场景会导致事务失效，是写出正确业务代码的基础。 1. 方法内部调用（自调用）这是最常见的事务失效原因。 1234567891011121314@Servicepublic class OrderService &#123;    &#x2F;&#x2F; 走 Spring 代理，事务生效">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL 索引失效的几种情况">
-<meta property="og:url" content="https://001visir.github.io/2024/08/22/2024-08-22-mysql-index-failure/index.html">
+<meta property="og:title" content="@Transactional 失效的几种场景">
+<meta property="og:url" content="https://001visir.github.io/2025/02/14/2025-02-14-spring-transaction-failure/index.html">
 <meta property="og:site_name" content="visir的技术博客">
-<meta property="og:description" content="前言建了索引但查询没走索引，这是 MySQL 开发中很常见的问题。了解什么情况下索引会失效，是优化 SQL 的基础。 1. 使用左模糊查询 %xxx12345-- 索引失效SELECT * FROM users WHERE name LIKE &#x27;%visir&#x27;;-- 索引生效（尽量使用右模糊）SELECT * FROM users WHERE name LIKE &#x27;v">
+<meta property="og:description" content="前言Spring 的 @Transactional 是我们最常用的声明式事务控制，但很多时候它会悄悄失效，导致数据不一致。了解哪些场景会导致事务失效，是写出正确业务代码的基础。 1. 方法内部调用（自调用）这是最常见的事务失效原因。 1234567891011121314@Servicepublic class OrderService &#123;    &#x2F;&#x2F; 走 Spring 代理，事务生效">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-08-22T02:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-31T11:12:11.097Z">
+<meta property="article:published_time" content="2025-02-14T03:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-31T11:46:38.659Z">
 <meta property="article:author" content="你的名字">
-<meta property="article:tag" content="MySQL">
-<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="Spring">
+<meta property="article:tag" content="事务">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>MySQL 索引失效的几种情况 - visir的技术博客</title>
+  <title>@Transactional 失效的几种场景 - visir的技术博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -304,7 +304,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="MySQL 索引失效的几种情况"></span>
+            <span id="subtitle" data-typed-text="@Transactional 失效的几种场景"></span>
           
         </div>
 
@@ -315,8 +315,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-08-22 10:00" pubdate>
-          2024年8月22日 上午
+        <time datetime="2025-02-14 11:00" pubdate>
+          2025年2月14日 上午
         </time>
       </span>
     
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.6k 字
+          1.9k 字
         
       </span>
     
@@ -338,7 +338,7 @@
         
         
         
-          14 分钟
+          16 分钟
         
       </span>
     
@@ -377,45 +377,50 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">MySQL 索引失效的几种情况</h1>
+            <h1 id="seo-header">@Transactional 失效的几种场景</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>建了索引但查询没走索引，这是 MySQL 开发中很常见的问题。了解什么情况下索引会失效，是优化 SQL 的基础。</p>
-<h2 id="1-使用左模糊查询-xxx"><a href="#1-使用左模糊查询-xxx" class="headerlink" title="1. 使用左模糊查询 %xxx"></a>1. 使用左模糊查询 <code>%xxx</code></h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 索引失效</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> name <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;%visir&#x27;</span>;<br><br><span class="hljs-comment">-- 索引生效（尽量使用右模糊）</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> name <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;visir%&#x27;</span>;<br></code></pre></td></tr></table></figure>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Spring 的 <code>@Transactional</code> 是我们最常用的声明式事务控制，但很多时候它会悄悄失效，导致数据不一致。了解哪些场景会导致事务失效，是写出正确业务代码的基础。</p>
+<h2 id="1-方法内部调用（自调用）"><a href="#1-方法内部调用（自调用）" class="headerlink" title="1. 方法内部调用（自调用）"></a>1. 方法内部调用（自调用）</h2><p>这是最常见的事务失效原因。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderService</span> &#123;<br><br>    <span class="hljs-comment">// 走 Spring 代理，事务生效</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">createOrder</span><span class="hljs-params">(Order order)</span> &#123;<br>        <span class="hljs-comment">// insert order...</span><br>        <span class="hljs-built_in">this</span>.pay(order);  <span class="hljs-comment">// this 调用，不会走代理，事务失效！</span><br>    &#125;<br><br>    <span class="hljs-meta">@Transactional</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pay</span><span class="hljs-params">(Order order)</span> &#123;<br>        <span class="hljs-comment">// update order status...</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>原因：索引按照从左到右的顺序排序，左模糊无法二分查找，只能全表扫描。</p>
-<p><strong>优化方案</strong>：考虑使用 ES 做全文搜索，或者给数据库加一个反转字段存储反转后的字符串。</p>
-<h2 id="2-索引列参与运算"><a href="#2-索引列参与运算" class="headerlink" title="2. 索引列参与运算"></a>2. 索引列参与运算</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 索引失效：函数运算</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">YEAR</span>(create_time) <span class="hljs-operator">=</span> <span class="hljs-number">2024</span>;<br><br><span class="hljs-comment">-- 索引生效：先计算再比较</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> create_time <span class="hljs-operator">&gt;=</span> <span class="hljs-string">&#x27;2024-01-01&#x27;</span> <span class="hljs-keyword">AND</span> create_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2025-01-01&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p><code>this.pay()</code> 是直接调用，不是通过 Spring 代理对象，所以代理增强不生效。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>把 <code>pay()</code> 拆到另一个 Service 中调用</li>
+<li>注入自身代理对象 <code>((OrderService)AopContext.currentProxy()).pay(order)</code></li>
+</ul>
+<h2 id="2-异常被-catch-吞掉"><a href="#2-异常被-catch-吞掉" class="headerlink" title="2. 异常被 catch 吞掉"></a>2. 异常被 catch 吞掉</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">createOrder</span><span class="hljs-params">(Order order)</span> &#123;<br>    <span class="hljs-keyword">try</span> &#123;<br>        <span class="hljs-comment">// 插入订单</span><br>        orderMapper.insert(order);<br>        <span class="hljs-comment">// 调用支付</span><br>        paymentService.pay(order.getId());<br>    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>        <span class="hljs-comment">// 异常被吞掉了，事务不会回滚！</span><br>        log.error(<span class="hljs-string">&quot;支付失败&quot;</span>, e);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p><strong>原则</strong>：索引列最好出现在 <code>=</code> 左边，不要参与计算或函数调用。</p>
-<h2 id="3-索引列使用-NOT、Erik"><a href="#3-索引列使用-NOT、Erik" class="headerlink" title="3. 索引列使用 NOT、Erik !="></a>3. 索引列使用 NOT、Erik <code>!=</code></h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 通常索引失效（取决于数据分布）</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">!=</span> <span class="hljs-number">1</span>;<br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> status <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">IN</span> (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>);<br></code></pre></td></tr></table></figure>
+<p>Spring 事务默认只回滚 <strong>RuntimeException</strong> 和 <strong>Error</strong>，检查型异常需要手动配置。</p>
+<p><strong>解决方案</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br></code></pre></td></tr></table></figure>
 
-<p>MySQL 优化器发现使用索引还不如全表扫描快时，会放弃索引。</p>
-<h2 id="4-复合索引未遵循最左前缀原则"><a href="#4-复合索引未遵循最左前缀原则" class="headerlink" title="4. 复合索引未遵循最左前缀原则"></a>4. 复合索引未遵循最左前缀原则</h2><p>复合索引 <code>idx(name, age, status)</code> 的结构类似按 name 排序的”name- age- status”三层目录。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 索引生效：使用了最左前缀</span><br><span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;visir&#x27;</span>              <span class="hljs-comment">-- 生效</span><br><span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;visir&#x27;</span> <span class="hljs-keyword">AND</span> age <span class="hljs-operator">=</span> <span class="hljs-number">25</span>  <span class="hljs-comment">-- 生效</span><br><span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;visir&#x27;</span> <span class="hljs-keyword">AND</span> age <span class="hljs-operator">=</span> <span class="hljs-number">25</span> <span class="hljs-keyword">AND</span> status <span class="hljs-operator">=</span> <span class="hljs-number">1</span>  <span class="hljs-comment">-- 生效</span><br><br><span class="hljs-comment">-- 索引部分生效</span><br><span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;visir&#x27;</span> <span class="hljs-keyword">AND</span> status <span class="hljs-operator">=</span> <span class="hljs-number">1</span>  <span class="hljs-comment">-- 只有 name 生效</span><br><br><span class="hljs-comment">-- 索引失效：跳过 name</span><br><span class="hljs-keyword">WHERE</span> age <span class="hljs-operator">=</span> <span class="hljs-number">25</span>  <span class="hljs-comment">-- 完全不生效</span><br></code></pre></td></tr></table></figure>
+<h2 id="3-抛出检查型异常但没有配置-rollbackFor"><a href="#3-抛出检查型异常但没有配置-rollbackFor" class="headerlink" title="3. 抛出检查型异常但没有配置 rollbackFor"></a>3. 抛出检查型异常但没有配置 rollbackFor</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional</span>  <span class="hljs-comment">// 默认只回滚 RuntimeException</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">createOrder</span><span class="hljs-params">(Order order)</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>    <span class="hljs-comment">// 抛出检查型异常，事务不会回滚</span><br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IOException</span>(<span class="hljs-string">&quot;网络异常&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p><strong>原则</strong>：复合索引从最左边的列开始连续使用。</p>
-<h2 id="5-OR-连接条件中有列无索引"><a href="#5-OR-连接条件中有列无索引" class="headerlink" title="5. OR 连接条件中有列无索引"></a>5. OR 连接条件中有列无索引</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 如果 age 列没有索引，整条 SQL 索引失效</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;visir&#x27;</span> <span class="hljs-keyword">OR</span> age <span class="hljs-operator">=</span> <span class="hljs-number">25</span>;<br><br><span class="hljs-comment">-- 改造成 UNION 或给 age 加索引</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;visir&#x27;</span><br><span class="hljs-keyword">UNION</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> age <span class="hljs-operator">=</span> <span class="hljs-number">25</span>;<br></code></pre></td></tr></table></figure>
+<p><strong>解决方案</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(rollbackFor = Exception.class)</span><br></code></pre></td></tr></table></figure>
 
-<h2 id="6-数据类型隐式转换"><a href="#6-数据类型隐式转换" class="headerlink" title="6. 数据类型隐式转换"></a>6. 数据类型隐式转换</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- phone 是 VARCHAR 类型</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> phone <span class="hljs-operator">=</span> <span class="hljs-number">13000000000</span>;  <span class="hljs-comment">-- 索引失效</span><br><br><span class="hljs-comment">-- 实际执行：CAST(phone AS INT) = 13000000000，全表扫描</span><br></code></pre></td></tr></table></figure>
+<h2 id="4-传播行为配置错误"><a href="#4-传播行为配置错误" class="headerlink" title="4. 传播行为配置错误"></a>4. 传播行为配置错误</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(propagation = Propagation.NOT_SUPPORTED)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">createOrder</span><span class="hljs-params">(Order order)</span> &#123;<br>    <span class="hljs-comment">// 挂起当前事务，不创建新事务</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>传入的参数类型和字段类型不一致时，MySQL 会做隐式类型转换，导致索引失效。</p>
-<h2 id="7-优化器觉得全表扫描更快"><a href="#7-优化器觉得全表扫描更快" class="headerlink" title="7. 优化器觉得全表扫描更快"></a>7. 优化器觉得全表扫描更快</h2><p>当 MySQL 优化器估算使用索引需要扫描大量数据行（超过全表的 20%-30%），认为不如直接全表扫描时，会放弃索引。这个阈值不是固定的，取决于表大小和数据分布。</p>
-<p><strong>解决方案</strong>：用 <code>EXPLAIN</code> 分析执行计划，如果确认需要使用索引，可以 <code>FORCE INDEX(idx_name)</code> 强制指定。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">EXPLAIN <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users FORCE INDEX(idx_name) <span class="hljs-keyword">WHERE</span> name <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;visir%&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<p><code>NOT_SUPPORTED</code>、<code>NEVER</code> 等传播行为会导致事务不生效。</p>
+<h2 id="5-多数据源环境下没有指定-TransactionManager"><a href="#5-多数据源环境下没有指定-TransactionManager" class="headerlink" title="5. 多数据源环境下没有指定 TransactionManager"></a>5. 多数据源环境下没有指定 TransactionManager</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(transactionManager = &quot;orderTransactionManager&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">transfer</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-comment">// 如果不指定，可能用错 TransactionManager</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>索引失效的常见场景：</p>
-<ol>
-<li>左模糊查询</li>
-<li>索引列参与运算</li>
-<li>NOT &#x2F; !&#x3D;</li>
-<li>复合索引不满足最左前缀</li>
-<li>OR 中有无索引的列</li>
-<li>数据类型隐式转换</li>
+<h2 id="6-访问修饰符不是-public"><a href="#6-访问修饰符不是-public" class="headerlink" title="6. 访问修饰符不是 public"></a>6. 访问修饰符不是 public</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">createOrder</span><span class="hljs-params">(Order order)</span> &#123;  <span class="hljs-comment">// private，事务不生效</span><br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Spring 事务是基于 AOP 代理实现的，private 方法无法被代理增强。</p>
+<h2 id="7-同一个类中两个方法互相调用"><a href="#7-同一个类中两个方法互相调用" class="headerlink" title="7. 同一个类中两个方法互相调用"></a>7. 同一个类中两个方法互相调用</h2><p>跟第 1 点一样，通过 <code>this.xxx()</code> 调用不走 Spring 代理。</p>
+<h2 id="8-数据库本身不支持事务"><a href="#8-数据库本身不支持事务" class="headerlink" title="8. 数据库本身不支持事务"></a>8. 数据库本身不支持事务</h2><p>MySQL 的 MyISAM 引擎不支持事务，即使加了 <code>@Transactional</code> 也不会生效。InnoDB 才支持事务。</p>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><ol>
+<li><code>@Transactional</code> 只能加在 public 方法上</li>
+<li>同一个类中避免自调用，需要调用时注入自身</li>
+<li>显式指定 <code>rollbackFor = Exception.class</code></li>
+<li>避免在事务方法中执行耗时操作（RPC、批量插入等）</li>
+<li>养成用单元测试验证事务是否生效的习惯</li>
 </ol>
-<p>养成用 <code>EXPLAIN</code> 分析 SQL 的习惯，是避免索引失效的第一步。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Spring 事务失效的原因大多跟 Spring 代理机制有关：非 public 方法、自调用、异常被吞、异常类型不匹配、传播行为错误等。理解这些场景，能帮我们避免很多生产环境的数据一致性问题。</p>
 <span id="more"></span>
 
                 
@@ -450,9 +455,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/MySQL/" class="print-no-link">#MySQL</a>
+        <a href="/tags/Spring/" class="print-no-link">#Spring</a>
       
-        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="print-no-link">#数据库</a>
+        <a href="/tags/%E4%BA%8B%E5%8A%A1/" class="print-no-link">#事务</a>
       
     </div>
   
@@ -464,8 +469,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>MySQL 索引失效的几种情况</div>
-      <div>https://001visir.github.io/2024/08/22/2024-08-22-mysql-index-failure/</div>
+      <div>@Transactional 失效的几种场景</div>
+      <div>https://001visir.github.io/2025/02/14/2025-02-14-spring-transaction-failure/</div>
     </div>
     <div class="license-meta">
       
@@ -477,7 +482,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年8月22日</div>
+          <div>2025年2月14日</div>
         </div>
       
       
@@ -509,9 +514,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/09/15/2024-09-15-mysql-mvcc/" title="MySQL MVCC 机制详解">
+                      <a href="/2025/03/05/2025-03-05-redis-distributed-lock/" title="Redis 如何实现分布式锁">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">MySQL MVCC 机制详解</span>
+                        <span class="hidden-mobile">Redis 如何实现分布式锁</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -519,8 +524,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/07/10/2024-07-10-redis-cache-problems/" title="Redis 缓存穿透、击穿、雪崩详解">
-                        <span class="hidden-mobile">Redis 缓存穿透、击穿、雪崩详解</span>
+                      <a href="/2025/01/08/2025-01-08-jvm-gc/" title="垃圾回收算法详解">
+                        <span class="hidden-mobile">垃圾回收算法详解</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
