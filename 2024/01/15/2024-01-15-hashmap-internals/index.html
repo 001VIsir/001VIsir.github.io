@@ -835,46 +835,29 @@
   </noscript>
 
 <!-- Live2D 桌宠 -->
-<script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.8/dist/browser/pixi.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/index.js"></script>
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@master/dist/waifu.min.css">
 <script>
-(function(){
-var canvas=document.createElement("canvas");
-canvas.id="live2d-canvas";
-canvas.width=200;canvas.height=300;
-canvas.style.cssText="position:fixed;bottom:0;right:0;width:180px;height:270px;pointer-events:none;z-index:9999";
-document.body.appendChild(canvas);
-var btn=document.createElement("button");
-btn.textContent="隐藏";
-btn.style.cssText="position:fixed;bottom:20px;right:20px;z-index:10000;background:#ff6b9d;color:#fff;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:14px;box-shadow:0 2px 8px rgba(255,107,157,.4)";
-var visible=true;
-btn.onclick=function(){visible=!visible;canvas.style.display=visible?"":"none";btn.textContent=visible?"隐藏":"看板娘";};
-document.body.appendChild(btn);
-function initLive2D(){
-if(typeof PIXI=="undefined"){setTimeout(initLive2D,100);return;}
-if(typeof PIXI.live2d=="undefined"){setTimeout(initLive2D,100);return;}
-try{
-var app=new PIXI.Application({view:canvas,width:180,height:270,transparent:true,autoDensity:true,resolution:window.devicePixelRatio||1});
-PIXI.live2d.Model.from("https://fastly.jsdelivr.net/gh/Live2D/CubismWebSamples/Samples/Resources/Hiyori/Hiyori.model3.json").then(function(model){
-model.scale.set(0.15);
-model.anchor.set(0.5,1);
-model.position.set(90,270);
-app.stage.addChild(model);
-document.addEventListener("mousemove",function(e){
-if(!model.internalModel)return;
-try{
-var cm=model.internalModel.coreModel;
-var rect=canvas.getBoundingClientRect();
-var relX=(e.clientX-rect.left)/rect.width-0.5;
-var relY=(e.clientY-rect.top)/rect.height-0.5;
-cm.setParameterValueById(cm.getParameterIndex("ParamAngleX"),relX*15);
-cm.setParameterValueById(cm.getParameterIndex("ParamAngleY"),relY*8);
-}catch(ee){}
-});
-}).catch(function(e){console.error("Live2D model error:",e);});
-}catch(e){console.error("Live2D init error:",e);}
+// Load Live2D widget with Hiyori model
+var live2d_path = "https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0-rc.6/dist/";
+var modelPath = "https://fastly.jsdelivr.net/gh/Live2D/CubismWebSamples/Samples/Resources/Hiyori/Hiyori.model3.json";
+(async function(){
+function loadScript(src) {
+  return new Promise(function(r,c){var t=document.createElement("script");t.src=src;t.onload=r;t.onerror=c;document.head.appendChild(t)});
 }
-if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",initLive2D);}else{initLive2D();}
+function loadCss(href) {
+  return new Promise(function(r,c){var l=document.createElement("link");l.rel="stylesheet";l.href=href;l.onload=r;l.onerror=c;document.head.appendChild(l)});
+}
+await loadCss(live2d_path + "waifu.css");
+await loadScript("https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js");
+await loadScript(live2d_path + "live2d.min.js");
+await loadScript(live2d_path + "waifu-tips.js");
+window.initWidget && window.initWidget({
+  waifuPath: live2d_path + "waifu-tips.json",
+  models: [modelPath],
+  tools: ["hitokoto","switch-model","switch-texture","photo","info","quit"],
+  drag: false,
+  logLevel: "warn"
+});
 })();
 </script>
 </body>
