@@ -31,6 +31,33 @@
   
   
   <entry>
+    <title>leetcode105</title>
+    <link href="/2026/03/31/leetcode300/"/>
+    <url>/2026/03/31/leetcode300/</url>
+    
+    <content type="html"><![CDATA[<h2 id="300"><a href="#300" class="headerlink" title="#300"></a>#300</h2><p>dp问题</p><p><a href="https://leetcode.cn/problems/longest-increasing-subsequence/">300. 最长递增子序列</a></p><p>给你一个整数数组 <code>nums</code> ，找到其中最长严格递增子序列的长度。</p><p><strong>子序列</strong> 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，<code>[3,6,2,7]</code> 是数组 <code>[0,3,1,6,2,2,7]</code> 的子序列。</p><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>动态规划，每次到达第i个元素的时候会发生两种情况：</p><ol><li>此元素偏小，从第i元素重新计算</li><li>遍历此元素之前的所有元素nums[j]，看看有没有比它更小的，如果有就取它dp[j]+1，直到最后</li></ol><h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthOfLIS</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;<br>        <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];<br>        <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> Integer.MIN_VALUE;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>            dp[i] = <span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; i; j++) &#123;<br>                <span class="hljs-keyword">if</span> (nums[i] &gt; nums[j]) &#123;<br>                    dp[i] = Math.max(dp[i], dp[j] + <span class="hljs-number">1</span>);<br><br>                &#125;<br>            &#125;<br>            max = Math.max(max, dp[i]);<br>        &#125;<br>        <span class="hljs-keyword">return</span> max;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p>时间：n^2</p><p>空间：n</p><span id="more"></span>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>算法</tag>
+      
+      <tag>leetcode</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>微服务架构入门：什么是微服务</title>
     <link href="/2025/11/20/2025-11-20-microservices-intro/"/>
     <url>/2025/11/20/2025-11-20-microservices-intro/</url>

@@ -19,23 +19,23 @@
   <meta name="author" content="你的名字">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前言微服务是近年来后端领域最火的概念之一。很多团队喊着要”微服务化”，但实际上对微服务的理解还停留在”把大项目拆成小项目”的层面。这篇文章聊聊微服务到底是什么，以及它解决了什么问题。 什么是微服务？维基百科的定义：微服务是一种软件架构风格，以一个个小而自治的服务来构建应用，每个服务运行在独立进程中，服务之间通过轻量级通信机制（HTTP REST、gRPC）协作。 简单来说：把一个大应用拆成多个独立">
+    <meta name="description" content="#300dp问题 300. 最长递增子序列 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。 子序列 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。 思路动态规划，每次到达第i个元素的时候会发生两种情况：  此元素偏小，从第i元素重新计算 遍历此元素之前的所有元素nums[j]">
 <meta property="og:type" content="article">
-<meta property="og:title" content="微服务架构入门：什么是微服务">
-<meta property="og:url" content="https://001visir.github.io/2025/11/20/2025-11-20-microservices-intro/index.html">
+<meta property="og:title" content="leetcode105">
+<meta property="og:url" content="https://001visir.github.io/2026/03/31/leetcode300/index.html">
 <meta property="og:site_name" content="visir的技术博客">
-<meta property="og:description" content="前言微服务是近年来后端领域最火的概念之一。很多团队喊着要”微服务化”，但实际上对微服务的理解还停留在”把大项目拆成小项目”的层面。这篇文章聊聊微服务到底是什么，以及它解决了什么问题。 什么是微服务？维基百科的定义：微服务是一种软件架构风格，以一个个小而自治的服务来构建应用，每个服务运行在独立进程中，服务之间通过轻量级通信机制（HTTP REST、gRPC）协作。 简单来说：把一个大应用拆成多个独立">
+<meta property="og:description" content="#300dp问题 300. 最长递增子序列 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。 子序列 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。 思路动态规划，每次到达第i个元素的时候会发生两种情况：  此元素偏小，从第i元素重新计算 遍历此元素之前的所有元素nums[j]">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-11-20T06:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-31T11:16:24.449Z">
+<meta property="article:published_time" content="2026-03-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-03T20:53:41.604Z">
 <meta property="article:author" content="你的名字">
-<meta property="article:tag" content="微服务">
-<meta property="article:tag" content="架构">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="leetcode">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>微服务架构入门：什么是微服务 - visir的技术博客</title>
+  <title>leetcode105 - visir的技术博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -304,7 +304,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="微服务架构入门：什么是微服务"></span>
+            <span id="subtitle" data-typed-text="leetcode105"></span>
           
         </div>
 
@@ -315,8 +315,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-11-20 14:00" pubdate>
-          2025年11月20日 下午
+        <time datetime="2026-03-31 00:00" pubdate>
+          2026年3月31日 凌晨
         </time>
       </span>
     
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.5k 字
+          560 字
         
       </span>
     
@@ -338,7 +338,7 @@
         
         
         
-          13 分钟
+          5 分钟
         
       </span>
     
@@ -377,96 +377,24 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">微服务架构入门：什么是微服务</h1>
+            <h1 id="seo-header">leetcode105</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>微服务是近年来后端领域最火的概念之一。很多团队喊着要”微服务化”，但实际上对微服务的理解还停留在”把大项目拆成小项目”的层面。这篇文章聊聊微服务到底是什么，以及它解决了什么问题。</p>
-<h2 id="什么是微服务？"><a href="#什么是微服务？" class="headerlink" title="什么是微服务？"></a>什么是微服务？</h2><p>维基百科的定义：微服务是一种软件架构风格，以一个个小而自治的服务来构建应用，每个服务运行在独立进程中，服务之间通过轻量级通信机制（HTTP REST、gRPC）协作。</p>
-<p>简单来说：<strong>把一个大应用拆成多个独立的小应用，每个小应用专注做好一件事。</strong></p>
-<h2 id="微服务-vs-单体架构"><a href="#微服务-vs-单体架构" class="headerlink" title="微服务 vs 单体架构"></a>微服务 vs 单体架构</h2><h3 id="单体架构"><a href="#单体架构" class="headerlink" title="单体架构"></a>单体架构</h3><p>所有模块打包在一个 jar &#x2F; war 中：</p>
-<ul>
-<li>用户模块、订单模块、支付模块、商品模块……都在同一个进程里</li>
-<li>优点：简单，部署容易，本地开发调试方便</li>
-<li>缺点：一个模块出问题拖垮整个应用；所有代码耦合在一起，改动风险大</li>
-</ul>
-<h3 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h3><p>每个模块独立部署为服务：</p>
-<ul>
-<li>用户服务、订单服务、支付服务、商品服务……各自独立进程</li>
-<li>通过 HTTP &#x2F; gRPC &#x2F; 消息队列通信</li>
-<li>优点：独立部署、故障隔离、技术异构、按需扩展</li>
-<li>缺点：复杂度高、运维难度大、数据一致性挑战</li>
-</ul>
-<h2 id="微服务的核心特征"><a href="#微服务的核心特征" class="headerlink" title="微服务的核心特征"></a>微服务的核心特征</h2><p><strong>独立部署</strong> — 每个服务可以独立打包、部署、升级，不影响其他服务。</p>
-<p><strong>按业务边界拆分</strong> — 按业务领域划分服务，而不是按技术层次划分（不是把 Controller 放一个服务、DAO 放另一个服务）。</p>
-<p><strong>去中心化</strong> — 每个服务自己管理数据库，不共享数据库。</p>
-<p><strong>进程隔离</strong> — 每个服务运行在独立的进程（容器）中。</p>
-<p><strong>技术多样性</strong> — 不同服务可以用不同的技术栈，只要对外接口一致。</p>
-<h2 id="微服务带来的问题"><a href="#微服务带来的问题" class="headerlink" title="微服务带来的问题"></a>微服务带来的问题</h2><p>微服务不是银弹，它解决了单体架构的一些问题，但也引入了新的复杂度：</p>
-<p><strong>分布式事务</strong> — 不同服务有自己的数据库，一个业务操作可能涉及多个服务的数据一致性。解决方案：Saga 模式、TCC 模式、本地消息表。</p>
-<p><strong>服务间通信</strong> — HTTP REST 调用可能超时、重试、失败，需要考虑幂等性、重试机制。</p>
-<p><strong>服务发现</strong> — 服务实例动态上下线，如何让调用方找到服务？解决方案：Eureka、Nacos、Consul。</p>
-<p><strong>分布式链路追踪</strong> — 一个请求经过多个服务，如何追踪全链路？解决方案：Skywalking、Zipkin、Jaeger。</p>
-<p><strong>运维复杂度</strong> — 10 个服务怎么部署、监控、日志聚合？需要容器化（Docker + Kubernetes）和完善的 DevOps 体系。</p>
-<h2 id="什么时候该用微服务？"><a href="#什么时候该用微服务？" class="headerlink" title="什么时候该用微服务？"></a>什么时候该用微服务？</h2><p><strong>适合微服务的场景</strong>：</p>
-<ul>
-<li>团队规模较大（10 人以上），不同团队负责不同服务</li>
-<li>业务复杂度高，需要独立演进</li>
-<li>对可用性和伸缩性要求高</li>
-</ul>
-<p><strong>不适合微服务的场景</strong>：</p>
-<ul>
-<li>团队小（3-5 人以下）</li>
-<li>业务复杂度低，团队经验不足</li>
-<li>还没有搞定 CI&#x2F;CD、容器化等基础设施</li>
-</ul>
-<p><strong>从单体开始，逐步拆分</strong> — 这是推荐的做法。先把单体架构做好，等业务复杂到不得不拆时再拆。</p>
-<h2 id="微服务技术栈"><a href="#微服务技术栈" class="headerlink" title="微服务技术栈"></a>微服务技术栈</h2><table>
-<thead>
-<tr>
-<th>领域</th>
-<th>常用技术</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>服务开发</td>
-<td>Spring Boot &#x2F; Go &#x2F; Node.js</td>
-</tr>
-<tr>
-<td>服务网关</td>
-<td>Spring Cloud Gateway &#x2F; Kong &#x2F; Zuul</td>
-</tr>
-<tr>
-<td>服务发现</td>
-<td>Nacos &#x2F; Eureka &#x2F; Consul</td>
-</tr>
-<tr>
-<td>配置中心</td>
-<td>Nacos &#x2F; Apollo &#x2F; Spring Cloud Config</td>
-</tr>
-<tr>
-<td>熔断限流</td>
-<td>Sentinel &#x2F; Hystrix</td>
-</tr>
-<tr>
-<td>分布式事务</td>
-<td>Seata &#x2F; Saga</td>
-</tr>
-<tr>
-<td>链路追踪</td>
-<td>Skywalking &#x2F; Zipkin &#x2F; Jaeger</td>
-</tr>
-<tr>
-<td>容器编排</td>
-<td>Kubernetes &#x2F; Docker Swarm</td>
-</tr>
-<tr>
-<td>持续集成</td>
-<td>Jenkins &#x2F; GitLab CI &#x2F; Argo CD</td>
-</tr>
-</tbody></table>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>微服务是一种架构风格，不是银弹。它通过把大应用拆成小服务来实现独立部署、故障隔离和技术多样性，但同时也带来了分布式系统的固有复杂性。是否采用微服务，应该根据团队规模、业务复杂度和技术储备来综合判断，而不是盲目跟风。</p>
+                <h2 id="300"><a href="#300" class="headerlink" title="#300"></a>#300</h2><p>dp问题</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-increasing-subsequence/">300. 最长递增子序列</a></p>
+<p>给你一个整数数组 <code>nums</code> ，找到其中最长严格递增子序列的长度。</p>
+<p><strong>子序列</strong> 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，<code>[3,6,2,7]</code> 是数组 <code>[0,3,1,6,2,2,7]</code> 的子序列。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>动态规划，每次到达第i个元素的时候会发生两种情况：</p>
+<ol>
+<li>此元素偏小，从第i元素重新计算</li>
+<li>遍历此元素之前的所有元素nums[j]，看看有没有比它更小的，如果有就取它dp[j]+1，直到最后</li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">lengthOfLIS</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;<br>        <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];<br>        <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> Integer.MIN_VALUE;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>            dp[i] = <span class="hljs-number">1</span>;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; i; j++) &#123;<br>                <span class="hljs-keyword">if</span> (nums[i] &gt; nums[j]) &#123;<br>                    dp[i] = Math.max(dp[i], dp[j] + <span class="hljs-number">1</span>);<br><br>                &#125;<br>            &#125;<br>            max = Math.max(max, dp[i]);<br>        &#125;<br>        <span class="hljs-keyword">return</span> max;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p>时间：n^2</p>
+<p>空间：n</p>
 <span id="more"></span>
 
                 
@@ -486,7 +414,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" class="category-chain-item">架构设计</a>
+  <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
   
   
 
@@ -501,9 +429,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="print-no-link">#微服务</a>
+        <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
       
-        <a href="/tags/%E6%9E%B6%E6%9E%84/" class="print-no-link">#架构</a>
+        <a href="/tags/leetcode/" class="print-no-link">#leetcode</a>
       
     </div>
   
@@ -515,8 +443,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>微服务架构入门：什么是微服务</div>
-      <div>https://001visir.github.io/2025/11/20/2025-11-20-microservices-intro/</div>
+      <div>leetcode105</div>
+      <div>https://001visir.github.io/2026/03/31/leetcode300/</div>
     </div>
     <div class="license-meta">
       
@@ -528,7 +456,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年11月20日</div>
+          <div>2026年3月31日</div>
         </div>
       
       
@@ -560,7 +488,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2026/03/31/leetcode300/" title="leetcode105">
+                      <a href="/2026/03/31/leetcode105/" title="leetcode105">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">leetcode105</span>
                         <span class="visible-mobile">上一篇</span>
@@ -570,8 +498,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/10/05/2025-10-05-java-dynamic-proxy/" title="Java 动态代理原理">
-                        <span class="hidden-mobile">Java 动态代理原理</span>
+                      <a href="/2025/11/20/2025-11-20-microservices-intro/" title="微服务架构入门：什么是微服务">
+                        <span class="hidden-mobile">微服务架构入门：什么是微服务</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
