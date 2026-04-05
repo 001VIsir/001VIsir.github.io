@@ -19,22 +19,23 @@
   <meta name="author" content="你的名字">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前言java对象序列化与反序列化 序列化序列化（Serialization）：将 Java 对象转换为字节序列的过程（对象 → 字节） java原生序列化 实现 Serializable 接口  12345678910111213public class Person implements Serializable &#123;      private static final long ser">
+    <meta name="description" content="前言Elasticsearch 是一个基于 Apache Lucene 的分布式搜索和分析引擎，是 ELK : （Elasticsearch、Logstash、Kibana）的核心组件。 核心概念   概念 说明    Index（索引） 类似数据库，包含多篇文档   Document（文档） 类似数据库中的一行记录，JSON格式   Shard（分片） 索引的水平拆分单元，可分布式存储   Re">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java序列化与反序列化">
-<meta property="og:url" content="https://001visir.github.io/2025/04/03/java%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
+<meta property="og:title" content="elasticsearch相关">
+<meta property="og:url" content="https://001visir.github.io/2026/07/25/elasticsearch/index.html">
 <meta property="og:site_name" content="visir的技术博客">
-<meta property="og:description" content="前言java对象序列化与反序列化 序列化序列化（Serialization）：将 Java 对象转换为字节序列的过程（对象 → 字节） java原生序列化 实现 Serializable 接口  12345678910111213public class Person implements Serializable &#123;      private static final long ser">
+<meta property="og:description" content="前言Elasticsearch 是一个基于 Apache Lucene 的分布式搜索和分析引擎，是 ELK : （Elasticsearch、Logstash、Kibana）的核心组件。 核心概念   概念 说明    Index（索引） 类似数据库，包含多篇文档   Document（文档） 类似数据库中的一行记录，JSON格式   Shard（分片） 索引的水平拆分单元，可分布式存储   Re">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-04-03T03:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-05T14:40:05.202Z">
+<meta property="article:published_time" content="2026-07-25T03:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-05T21:49:03.983Z">
 <meta property="article:author" content="你的名字">
-<meta property="article:tag" content="java">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="elasticsearch">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>java序列化与反序列化 - visir的技术博客</title>
+  <title>elasticsearch相关 - visir的技术博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -303,7 +304,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="java序列化与反序列化"></span>
+            <span id="subtitle" data-typed-text="elasticsearch相关"></span>
           
         </div>
 
@@ -314,8 +315,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-04-03 11:00" pubdate>
-          2025年4月3日 上午
+        <time datetime="2026-07-25 11:00" pubdate>
+          2026年7月25日 上午
         </time>
       </span>
     
@@ -326,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.5k 字
+          1.5k 字
         
       </span>
     
@@ -337,7 +338,7 @@
         
         
         
-          21 分钟
+          13 分钟
         
       </span>
     
@@ -376,79 +377,149 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">java序列化与反序列化</h1>
+            <h1 id="seo-header">elasticsearch相关</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>java对象序列化与反序列化</p>
-<h1 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h1><p>序列化（Serialization）：将 Java 对象转换为字节序列的过程（对象 → 字节）</p>
-<h2 id="java原生序列化"><a href="#java原生序列化" class="headerlink" title="java原生序列化"></a>java原生序列化</h2><ol>
-<li>实现 Serializable 接口</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>      <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> <span class="hljs-number">1L</span>;<br><br>      <span class="hljs-keyword">private</span> String name;<br>      <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> age;<br>      <span class="hljs-keyword">private</span> <span class="hljs-keyword">transient</span> String password;  <span class="hljs-comment">// 不序列化</span><br><br>      <span class="hljs-keyword">public</span> <span class="hljs-title function_">Person</span><span class="hljs-params">(String name, <span class="hljs-type">int</span> age, String password)</span> &#123;<br>          <span class="hljs-built_in">this</span>.name = name;<br>          <span class="hljs-built_in">this</span>.age = age;<br>          <span class="hljs-built_in">this</span>.password = password;<br>      &#125;<br>  &#125;<br></code></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>序列化到文件</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.io.*;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SerializeDemo</span> &#123;<br>      <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>          <span class="hljs-type">Person</span> <span class="hljs-variable">person</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-number">25</span>, <span class="hljs-string">&quot;secret&quot;</span>);<br><br>          <span class="hljs-comment">// 序列化（对象 → 字节流）</span><br>          <span class="hljs-type">ObjectOutputStream</span> <span class="hljs-variable">out</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectOutputStream</span>(<br>              <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileOutputStream</span>(<span class="hljs-string">&quot;person.ser&quot;</span>)<br>          );<br>          out.writeObject(person);<br>          out.close();<br>      &#125;<br>  &#125;<br></code></pre></td></tr></table></figure>
-
-<h2 id="关键概念"><a href="#关键概念" class="headerlink" title="关键概念"></a>关键概念</h2><p><strong>serialVersionUID</strong></p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> <span class="hljs-number">1L</span>;<br></code></pre></td></tr></table></figure>
-
-<table>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Elasticsearch 是一个基于 Apache Lucene 的分布式搜索和分析引擎，是 ELK : （Elasticsearch、Logstash、Kibana）的核心组件。</p>
+<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><table>
 <thead>
 <tr>
-<th>说明</th>
-<th>内容</th>
+<th>概念</th>
+<th align="center">说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>作用</td>
-<td>版本号，确保序列化&#x2F;反序列化兼容性</td>
+<td>Index（索引）</td>
+<td align="center">类似数据库，包含多篇文档</td>
 </tr>
 <tr>
-<td>不声明</td>
-<td>JVM 自动生成，但每次类结构变化都会改变</td>
+<td>Document（文档）</td>
+<td align="center">类似数据库中的一行记录，JSON格式</td>
 </tr>
 <tr>
-<td>声明</td>
-<td>显式声明后，类结构变化但UID不变时可兼容</td>
+<td>Shard（分片）</td>
+<td align="center">索引的水平拆分单元，可分布式存储</td>
 </tr>
 <tr>
-<td>建议</td>
-<td>始终显式声明，避免反序列化失败</td>
+<td>Replica（副本）</td>
+<td align="center">分片的副本，保证高可用和读取吞吐</td>
 </tr>
 </tbody></table>
-<p>  <strong>transient 关键字</strong></p>
-<p>  private transient String password;  &#x2F;&#x2F; 该字段不参与序列化</p>
-<p>  典型应用场景：</p>
-<ul>
-<li>敏感数据（密码、密钥）</li>
-<li>派生数据（可计算得出）</li>
-<li>大数据（缓存、连接）</li>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><ul>
+<li>倒排索引：核心存储结构，term → doc 映射</li>
+<li>Lucene：底层搜索引擎库，负责索引和检索</li>
 </ul>
-<p>  <strong>static 字段</strong></p>
-<p>  private static String type &#x3D; “user”;  &#x2F;&#x2F; static 不参与序列化</p>
-<p>  因为 static 属于类，不属于对象实例。</p>
-<h1 id="反序列化"><a href="#反序列化" class="headerlink" title="反序列化"></a>反序列化</h1><p>反序列化（Deserialization）：将字节序列恢复为 Java 对象的过程（字节 → 对象）</p>
-<h2 id="JAVA原生反序列化"><a href="#JAVA原生反序列化" class="headerlink" title="JAVA原生反序列化"></a>JAVA原生反序列化</h2><p>反序列化</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DeserializeDemo</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-comment">// 反序列化（字节流 → 对象）</span><br>        <span class="hljs-type">ObjectInputStream</span> <span class="hljs-variable">in</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectInputStream</span>(<br>            <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(<span class="hljs-string">&quot;person.ser&quot;</span>)<br>        );<br>        <span class="hljs-type">Person</span> <span class="hljs-variable">person</span> <span class="hljs-operator">=</span> (Person) in.readObject();<br>        in.close();<br><br>        System.out.println(person.getName());  <span class="hljs-comment">// Alice</span><br>        System.out.println(person.getAge());   <span class="hljs-comment">// 25</span><br>        System.out.println(person.getPassword()); <span class="hljs-comment">// null (transient)</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h2 id="JSON序列化（主流方案）"><a href="#JSON序列化（主流方案）" class="headerlink" title="JSON序列化（主流方案）"></a>JSON序列化（主流方案）</h2><p>相比 Java 原生序列化，JSON 更轻量、跨语言、人类可读。</p>
-<p>  <strong>Jackson</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper;<br><br><span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br><br><span class="hljs-comment">// 序列化</span><br><span class="hljs-type">Person</span> <span class="hljs-variable">person</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-number">25</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">json</span> <span class="hljs-operator">=</span> mapper.writeValueAsString(person);<br><span class="hljs-comment">// &#123;&quot;name&quot;:&quot;Alice&quot;,&quot;age&quot;:25&#125;</span><br><br><span class="hljs-comment">// 反序列化</span><br><span class="hljs-type">Person</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> mapper.readValue(json, Person.class);<br><br><span class="hljs-comment">// 格式化输出</span><br><span class="hljs-type">String</span> <span class="hljs-variable">pretty</span> <span class="hljs-operator">=</span> mapper.writerWithDefaultPrettyPrinter().writeValueAsString(person);<br></code></pre></td></tr></table></figure>
-
-
-
-<p>  <strong>Gson（Google）</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.google.gson.Gson;<br><br><span class="hljs-type">Gson</span> <span class="hljs-variable">gson</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Gson</span>();<br><br><span class="hljs-comment">// 序列化</span><br><span class="hljs-type">String</span> <span class="hljs-variable">json</span> <span class="hljs-operator">=</span> gson.toJson(person);<br><br><span class="hljs-comment">// 反序列化</span><br><span class="hljs-type">Person</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> gson.fromJson(json, Person.class);<br></code></pre></td></tr></table></figure>
-
-
-
-<p><strong>Jackson 注解</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;<br>    <span class="hljs-meta">@JsonIgnore</span>        <span class="hljs-comment">// 忽略字段</span><br>    <span class="hljs-keyword">private</span> String password;<br><br>    <span class="hljs-meta">@JsonProperty(&quot;name&quot;)</span>  <span class="hljs-comment">// 自定义 JSON 字段名</span><br>    <span class="hljs-keyword">private</span> String fullName;<br><br>    <span class="hljs-meta">@JsonFormat(pattern = &quot;yyyy-MM-dd&quot;)</span>  <span class="hljs-comment">// 日期格式化</span><br>    <span class="hljs-keyword">private</span> Date birthday;<br><br>    <span class="hljs-meta">@JsonIgnoreProperties(&#123;&quot;id&quot;, &quot;internal&quot;&#125;)</span>  <span class="hljs-comment">// 反序列化时忽略</span><br>    <span class="hljs-keyword">private</span> String internal;<br>&#125;<br></code></pre></td></tr></table></figure>
-
+<h2 id="主要特点"><a href="#主要特点" class="headerlink" title="主要特点"></a>主要特点</h2><ol>
+<li>实时搜索：新增数据秒级可查（NRT ~1s）</li>
+<li>分布式：天然水平扩展，支持 PB 级数据</li>
+<li>全文检索：支持分词、模糊匹配、短语查询</li>
+<li>聚合分析：Facet、Aggregation（求和、平均、百分比等）</li>
+<li>高可用：副本分片自动 failover</li>
+<li>RESTful API：JSON over HTTP，跨语言友好</li>
+</ol>
+<h2 id="典型应用场景"><a href="#典型应用场景" class="headerlink" title="典型应用场景"></a>典型应用场景</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>全文搜索</td>
+<td align="center">电商搜索、企业文档搜索</td>
+</tr>
+<tr>
+<td>日志分析</td>
+<td align="center">ELK日志采集分析</td>
+</tr>
+<tr>
+<td>应用性能监控</td>
+<td align="center">APM</td>
+</tr>
+<tr>
+<td>安全分析</td>
+<td align="center">SIEM、威胁检测</td>
+</tr>
+<tr>
+<td>地理位置搜索</td>
+<td align="center">附近地点查询</td>
+</tr>
+</tbody></table>
+<h2 id="核心机制"><a href="#核心机制" class="headerlink" title="核心机制"></a>核心机制</h2><p>Elasticsearch（基于 Apache Lucene）通过以下核心机制实现极快的查询速度：</p>
+<ol>
+<li><strong>倒排索引（Inverted Index）</strong></li>
+</ol>
+<p>  这是最核心的结构。与正排索引（doc → terms）相反，倒排索引按 term 存储对应的<br>  doc 列表：</p>
+<p>  term “apple”    → [doc1, doc3, doc7]<br>  term “banana”  → [doc2, doc5]</p>
+<p>  查询时直接通过 term 找到文档，无需扫描全量数据，时间复杂度从 O(n) 降到 O(1) 或<br>   O(log n)。</p>
+<ol start="2">
+<li><strong>段（Segment）架构</strong></li>
+</ol>
+<ul>
+<li>索引数据被分成多个 immutable 的段</li>
+<li>写入时先到内存 buffer，定期刷到磁盘生成新段</li>
+<li>段一旦生成就不修改（只读），避免了随机写入</li>
+<li>后台定期合并小段为大段，减少段数量</li>
+</ul>
+<ol start="3">
+<li>多种缓存机制</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>缓存类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Node Query Cache</td>
+<td>存查询结果（按节点）</td>
+</tr>
+<tr>
+<td>Shard Request Cache</td>
+<td>缓存分片级别查询结果</td>
+</tr>
+<tr>
+<td>Fielddata</td>
+<td>聚合&#x2F;排序的列式存储</td>
+</tr>
+<tr>
+<td>Doc Values</td>
+<td>磁盘上的列式存储，比 Fielddata 节省内存</td>
+</tr>
+<tr>
+<td>系统页缓存（Page Cache）</td>
+<td>OS 层 MMap 加速磁盘读写</td>
+</tr>
+</tbody></table>
+<ol start="4">
+<li>分布式并行搜索</li>
+</ol>
+<ul>
+<li>索引分为主副分片，查询可并行在所有分片上执行</li>
+<li>协调节点（Coordinating Node）汇总各分片结果</li>
+<li>副本分片同时提供读写分离，提升吞吐</li>
+</ul>
+<ol start="5">
+<li>向量化与跳过式扫描</li>
+</ol>
+<ul>
+<li>Lucene 使用 Block Max WAND 等算法跳过不相关文档</li>
+<li>支持布尔查询、短语查询、范围查询等多种优化路径</li>
+<li>数值类型和日期类型使用 BKD 树加速范围查询</li>
+</ul>
+<ol start="6">
+<li>Near Real-Time (NRT) 查询</li>
+</ol>
+<p>  新增文档写入内存 buffer 和 transact log，不立即刷盘，通过 refresh interval（约1s）生成新段即可见，实现秒级近实时搜索。</p>
+<hr>
+<p>  简而言之：倒排索引 + 不可变段 + 多级缓存 + 并行分片搜索 + 智能算法优化 &#x3D; ES的极速查询能力。</p>
+<h2 id="生态组件"><a href="#生态组件" class="headerlink" title="生态组件"></a>生态组件</h2><p>  Logstash   → 数据采集、ETL<br>  Beats      → 轻量级数据采集<br>  Elasticsearch → 存储、搜索、分析<br>  Kibana     → 可视化</p>
+<h2 id="架构示意"><a href="#架构示意" class="headerlink" title="架构示意"></a>架构示意</h2><p>  客户端请求<br>      ↓<br>  协调节点（Coordinating Node）<br>      ↓<br>  数据节点（Data Node）<br>  ├── 分片 1 (Primary) → 副本 1 (Replica)<br>  ├── 分片 2 (Primary) → 副本 2 (Replica)<br>  └── 分片 3 (Primary) → 副本 3 (Replica)</p>
+<hr>
+<p>  简单来说，Elasticsearch就是为大规模数据搜索和分析而生的分布式数据库，核心优势在于倒排索引 + 分布式架构带来的高速检索能力。</p>
 <span id="more"></span>
 
                 
@@ -483,7 +554,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/java/" class="print-no-link">#java</a>
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="print-no-link">#数据库</a>
+      
+        <a href="/tags/elasticsearch/" class="print-no-link">#elasticsearch</a>
       
     </div>
   
@@ -495,8 +568,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>java序列化与反序列化</div>
-      <div>https://001visir.github.io/2025/04/03/java序列化与反序列化/</div>
+      <div>elasticsearch相关</div>
+      <div>https://001visir.github.io/2026/07/25/elasticsearch/</div>
     </div>
     <div class="license-meta">
       
@@ -508,7 +581,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年4月3日</div>
+          <div>2026年7月25日</div>
         </div>
       
       
@@ -540,18 +613,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/04/03/java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="java多线程">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">java多线程</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/03/28/2025-03-28-mysql-transaction-isolation/" title="MySQL 事务隔离级别详解">
-                        <span class="hidden-mobile">MySQL 事务隔离级别详解</span>
+                      <a href="/2026/04/04/java%E5%BC%82%E5%B8%B8/" title="java异常">
+                        <span class="hidden-mobile">java异常</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
