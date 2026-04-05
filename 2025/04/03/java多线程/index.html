@@ -19,23 +19,22 @@
   <meta name="author" content="你的名字">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前言我们用 Spring Boot 时，只要引入一个 starter 依赖，就能直接使用其中的功能，比如引入 spring-boot-starter-web 就能开发 Web 项目。这个机制是怎么工作的？ 什么是 Starter？Starter 就是一个包含两部分内容的 jar 包：  自动配置模块（xxx-autoconfigure）— 包含自动配置类和所有需要用到的依赖 Starter 模块（">
+    <meta name="description" content="前言java多线程 线程 vs 进程  线程 vs 进程:  进程：独立运行的程序（如打开两个 IDE） 线程：进程内的执行单元（一个进程可有多个线程）    Java 线程：  main 线程：程序入口 JVM 自动创建多个 GC 线程  java创建线程方式 集成 Thread  12345678910class MyThread extends Thread &#123;    @Overr">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring Boot Starter 原理">
-<meta property="og:url" content="https://001visir.github.io/2025/04/20/2025-04-20-spring-boot-starter/index.html">
+<meta property="og:title" content="java多线程">
+<meta property="og:url" content="https://001visir.github.io/2025/04/03/java%E5%A4%9A%E7%BA%BF%E7%A8%8B/index.html">
 <meta property="og:site_name" content="visir的技术博客">
-<meta property="og:description" content="前言我们用 Spring Boot 时，只要引入一个 starter 依赖，就能直接使用其中的功能，比如引入 spring-boot-starter-web 就能开发 Web 项目。这个机制是怎么工作的？ 什么是 Starter？Starter 就是一个包含两部分内容的 jar 包：  自动配置模块（xxx-autoconfigure）— 包含自动配置类和所有需要用到的依赖 Starter 模块（">
+<meta property="og:description" content="前言java多线程 线程 vs 进程  线程 vs 进程:  进程：独立运行的程序（如打开两个 IDE） 线程：进程内的执行单元（一个进程可有多个线程）    Java 线程：  main 线程：程序入口 JVM 自动创建多个 GC 线程  java创建线程方式 集成 Thread  12345678910class MyThread extends Thread &#123;    @Overr">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-04-20T07:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-31T11:14:14.309Z">
+<meta property="article:published_time" content="2025-04-03T03:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-05T14:50:37.566Z">
 <meta property="article:author" content="你的名字">
-<meta property="article:tag" content="Spring Boot">
-<meta property="article:tag" content="后端框架">
+<meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Spring Boot Starter 原理 - visir的技术博客</title>
+  <title>java多线程 - visir的技术博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -304,7 +303,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Spring Boot Starter 原理"></span>
+            <span id="subtitle" data-typed-text="java多线程"></span>
           
         </div>
 
@@ -315,8 +314,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-04-20 15:00" pubdate>
-          2025年4月20日 下午
+        <time datetime="2025-04-03 11:00" pubdate>
+          2025年4月3日 上午
         </time>
       </span>
     
@@ -327,7 +326,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.5k 字
+          1.7k 字
         
       </span>
     
@@ -338,7 +337,7 @@
         
         
         
-          22 分钟
+          15 分钟
         
       </span>
     
@@ -377,49 +376,52 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Spring Boot Starter 原理</h1>
+            <h1 id="seo-header">java多线程</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们用 Spring Boot 时，只要引入一个 starter 依赖，就能直接使用其中的功能，比如引入 <code>spring-boot-starter-web</code> 就能开发 Web 项目。这个机制是怎么工作的？</p>
-<h2 id="什么是-Starter？"><a href="#什么是-Starter？" class="headerlink" title="什么是 Starter？"></a>什么是 Starter？</h2><p>Starter 就是一个包含两部分内容的 jar 包：</p>
-<ol>
-<li><strong>自动配置模块</strong>（xxx-autoconfigure）— 包含自动配置类和所有需要用到的依赖</li>
-<li><strong>Starter 模块</strong>（xxx-starter）— 只是一个空 jar，依赖自动配置模块，用于给其他项目引用</li>
-</ol>
-<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mel"><span class="hljs-keyword">spring</span>-boot-starter-web<br>  └── 依赖 <span class="hljs-keyword">spring</span>-boot-autoconfigure（自动配置逻辑）<br>  └── 依赖 <span class="hljs-keyword">spring</span>-boot-starter（核心 starter）<br>  └── 依赖 <span class="hljs-keyword">spring</span>-web、<span class="hljs-keyword">spring</span>-webmvc 等<br></code></pre></td></tr></table></figure>
-
-<h2 id="Starter-的自动加载机制"><a href="#Starter-的自动加载机制" class="headerlink" title="Starter 的自动加载机制"></a>Starter 的自动加载机制</h2><p>Spring Boot 在启动时会做几件事：</p>
-<h3 id="1-扫描自动配置类"><a href="#1-扫描自动配置类" class="headerlink" title="1. 扫描自动配置类"></a>1. 扫描自动配置类</h3><p>通过 <code>spring.factories</code> 或 <code>AutoConfiguration.imports</code> 文件配置：</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># META-INF/spring.factories</span><br><span class="hljs-attr">org.springframework.boot.autoconfigure.EnableAutoConfiguration</span>=<span class="hljs-string">\</span><br><span class="hljs-string">  org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="2-条件注解过滤"><a href="#2-条件注解过滤" class="headerlink" title="2. 条件注解过滤"></a>2. 条件注解过滤</h3><p>每个自动配置类上有各种 <code>@ConditionalOnClass</code>、<code>@ConditionalOnMissingBean</code> 等注解，只有满足条件才会生效。</p>
-<h3 id="3-配置属性绑定"><a href="#3-配置属性绑定" class="headerlink" title="3. 配置属性绑定"></a>3. 配置属性绑定</h3><p><code>@EnableConfigurationProperties</code> 将 <code>application.yml</code> 中的配置绑定到配置类属性上：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@EnableConfigurationProperties(ServerProperties.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WebMvcAutoConfiguration</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># application.yml</span><br><span class="hljs-attr">server:</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span><br>  <span class="hljs-attr">servlet:</span><br>    <span class="hljs-attr">context-path:</span> <span class="hljs-string">/api</span><br></code></pre></td></tr></table></figure>
-
-<p>这些属性会自动绑定到 <code>ServerProperties</code> 对象。</p>
-<h2 id="自定义一个-Starter"><a href="#自定义一个-Starter" class="headerlink" title="自定义一个 Starter"></a>自定义一个 Starter</h2><p>假设我们要做一个”问候服务”的 starter：</p>
-<h3 id="1-创建自动配置模块"><a href="#1-创建自动配置模块" class="headerlink" title="1. 创建自动配置模块"></a>1. 创建自动配置模块</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// GreetingAutoConfiguration.java</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@ConditionalOnClass(GreetingService.class)</span>           <span class="hljs-comment">// classpath 有 GreetingService 才生效</span><br><span class="hljs-meta">@ConditionalOnMissingBean(GreetingService.class)</span>     <span class="hljs-comment">// 没有自定义 Bean 才生效</span><br><span class="hljs-meta">@EnableConfigurationProperties(GreetingProperties.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GreetingAutoConfiguration</span> &#123;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-meta">@ConditionalOnMissingBean</span><br>    <span class="hljs-keyword">public</span> GreetingService <span class="hljs-title function_">greetingService</span><span class="hljs-params">(GreetingProperties properties)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">GreetingService</span>(properties.getName(), properties.getMessage());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="2-注册自动配置类"><a href="#2-注册自动配置类" class="headerlink" title="2. 注册自动配置类"></a>2. 注册自动配置类</h3><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stata"># <span class="hljs-keyword">META</span>-<span class="hljs-keyword">INF</span>/spring/org.springframework.<span class="hljs-keyword">boot</span>.autoconfigure.AutoConfiguration.imports<br>com.example.greeting.GreetingAutoConfiguration<br></code></pre></td></tr></table></figure>
-
-<h3 id="3-创建-Starter-模块"><a href="#3-创建-Starter-模块" class="headerlink" title="3. 创建 Starter 模块"></a>3. 创建 Starter 模块</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- greeting-spring-boot-starter/pom.xml --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.example<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>greeting-spring-boot-autoconfigure<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="4-使用-Starter"><a href="#4-使用-Starter" class="headerlink" title="4. 使用 Starter"></a>4. 使用 Starter</h3><p>在其他项目中引入 starter 依赖，配置属性后即可使用：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.example<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>greeting-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">greeting:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">visir</span><br>  <span class="hljs-attr">message:</span> <span class="hljs-string">hello</span><br></code></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Autowired</span><br><span class="hljs-keyword">private</span> GreetingService greetingService;<br><br>greetingService.greet();  <span class="hljs-comment">// 输出: hello, visir</span><br></code></pre></td></tr></table></figure>
-
-<h2 id="Spring-Boot-官方-Starter-命名规范"><a href="#Spring-Boot-官方-Starter-命名规范" class="headerlink" title="Spring Boot 官方 Starter 命名规范"></a>Spring Boot 官方 Starter 命名规范</h2><ul>
-<li><code>spring-boot-starter-xxx</code> — 官方 Starter</li>
-<li><code>xxx-spring-boot-starter</code> — 第三方或自研 Starter</li>
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>java多线程</p>
+<h1 id="线程-vs-进程"><a href="#线程-vs-进程" class="headerlink" title="线程 vs 进程"></a>线程 vs 进程</h1><p>  线程 vs 进程:</p>
+<ul>
+<li>进程：独立运行的程序（如打开两个 IDE）</li>
+<li>线程：进程内的执行单元（一个进程可有多个线程）</li>
 </ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Starter 的核心是<strong>自动配置</strong>：Spring Boot 根据 classpath 中的类、配置的 properties、Spring 容器中的 Bean 等条件，自动决定哪些配置生效。starter 依赖把需要的 jar 都打包进来，配置属性通过 <code>@EnableConfigurationProperties</code> 注入，做到了”零配置”或”少配置”就能运行一个完整功能。</p>
+<p>  Java 线程：</p>
+<ul>
+<li>main 线程：程序入口</li>
+<li>JVM 自动创建多个 GC 线程</li>
+</ul>
+<h2 id="java创建线程方式"><a href="#java创建线程方式" class="headerlink" title="java创建线程方式"></a>java创建线程方式</h2><ol>
+<li>集成 Thread</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyThread</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Thread</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;线程执行中: &quot;</span> + Thread.currentThread().getName());<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 启动</span><br><span class="hljs-type">MyThread</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyThread</span>();<br>t.start();  <span class="hljs-comment">// 注意是 start()，不是 run()</span><br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>实现 Runnable（这似乎最好）</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyRunnable</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Runnable</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;Runnable 方式: &quot;</span> + Thread.currentThread().getName());<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 启动</span><br><span class="hljs-type">Thread</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MyRunnable</span>());<br>t.start();<br><br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>实现Callable</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCallable</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Callable</span>&lt;Integer&gt; &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">call</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        <span class="hljs-keyword">return</span> sum(<span class="hljs-number">1</span>, <span class="hljs-number">100</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">sum</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> a; i &lt;= b; i++) sum += i;<br>        <span class="hljs-keyword">return</span> sum;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 启动并获取返回值</span><br>FutureTask&lt;Integer&gt; task = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FutureTask</span>&lt;&gt;(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MyCallable</span>());<br><span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(task).start();<br><span class="hljs-type">Integer</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> task.get();  <span class="hljs-comment">// 阻塞等待结果</span><br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>线程池</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.util.concurrent.*;<br><br><span class="hljs-comment">// 创建线程池</span><br><span class="hljs-type">ExecutorService</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">4</span>);<br><br><span class="hljs-comment">// 提交 Runnable</span><br>executor.submit(() -&gt; &#123;<br>    System.out.println(<span class="hljs-string">&quot;任务1执行&quot;</span>);<br>&#125;);<br><br><span class="hljs-comment">// 提交 Callable</span><br>Future&lt;Integer&gt; future = executor.submit(() -&gt; &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">100</span> + <span class="hljs-number">200</span>;<br>&#125;);<br><br><span class="hljs-comment">// 关闭线程池</span><br>executor.shutdown();<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="线程生命周期"><a href="#线程生命周期" class="headerlink" title="线程生命周期"></a>线程生命周期</h2><figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs isbl">             ┌─────────┐<br>             │  <span class="hljs-variable">NEW</span>    │ <span class="hljs-variable">new</span> <span class="hljs-function"><span class="hljs-title">Thread</span>()</span><br>             └────┬────┘<br>                  │ <span class="hljs-function"><span class="hljs-title">start</span>()</span><br>                  ↓<br>       ┌──────────────────┐<br>       │     <span class="hljs-variable">RUNNABLE</span>     │<br>       │  (就绪/运行中)    │<br>       └────────┬─────────┘<br>                │<br>     ┌──────────┼──────────┐<br>     │          │          │<br>     ↓          ↓          ↓<br>┌────────┐ ┌────────┐ ┌─────────┐<br>│<span class="hljs-variable">TERMINATE</span>│ │<span class="hljs-variable">BLOCKED</span>│ │ <span class="hljs-variable">WAITING</span> │<br>└────────┘ └────────┘ └─────────┘<br>     ↑                      ↑<br>  <span class="hljs-function"><span class="hljs-title">run</span>()结束              <span class="hljs-title">wait</span>()/<span class="hljs-title"><span class="hljs-built_in">sleep</span></span>()</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h2><p><strong>问题：线程不共享</strong></p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UnsafeDemo</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br> <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">increment</span><span class="hljs-params">()</span> &#123;<br>        count++;  <span class="hljs-comment">// 非原子操作！多个线程会导致数据不一致</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>问题分析：count++ 实际是 3 步操作：读取 → 加1 → 写入</p>
 <span id="more"></span>
 
                 
@@ -454,9 +456,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Spring-Boot/" class="print-no-link">#Spring Boot</a>
-      
-        <a href="/tags/%E5%90%8E%E7%AB%AF%E6%A1%86%E6%9E%B6/" class="print-no-link">#后端框架</a>
+        <a href="/tags/java/" class="print-no-link">#java</a>
       
     </div>
   
@@ -468,8 +468,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Spring Boot Starter 原理</div>
-      <div>https://001visir.github.io/2025/04/20/2025-04-20-spring-boot-starter/</div>
+      <div>java多线程</div>
+      <div>https://001visir.github.io/2025/04/03/java多线程/</div>
     </div>
     <div class="license-meta">
       
@@ -481,7 +481,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年4月20日</div>
+          <div>2025年4月3日</div>
         </div>
       
       
@@ -513,9 +513,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/05/18/2025-05-18-java-threadpool/" title="Java 线程池参数和拒绝策略">
+                      <a href="/2025/04/20/2025-04-20-spring-boot-starter/" title="Spring Boot Starter 原理">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Java 线程池参数和拒绝策略</span>
+                        <span class="hidden-mobile">Spring Boot Starter 原理</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -523,8 +523,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/04/03/java%E5%A4%9A%E7%BA%BF%E7%A8%8B/" title="java多线程">
-                        <span class="hidden-mobile">java多线程</span>
+                      <a href="/2025/04/03/java%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="java序列化与反序列化">
+                        <span class="hidden-mobile">java序列化与反序列化</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
