@@ -19,22 +19,22 @@
   <meta name="author" content="你的名字">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前言java语法相关 finalJava 中 final 字段的用法主要分为三类：  空白 final（Blank Final）    声明时不赋值，在构造器中赋值一次： 1234567public class Person &#123;      private final String name;      public Person(String name) &#123;">
+    <meta name="description" content="前言java对象序列化与反序列化 序列化序列化（Serialization）：将 Java 对象转换为字节序列的过程（对象 → 字节） java原生序列化 实现 Serializable 接口  12345678910111213public class Person implements Serializable &#123;      private static final long ser">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java相关">
-<meta property="og:url" content="https://001visir.github.io/2025/03/25/java%E7%9B%B8%E5%85%B3/index.html">
+<meta property="og:title" content="java序列化与反序列化">
+<meta property="og:url" content="https://001visir.github.io/2025/03/25/java%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
 <meta property="og:site_name" content="visir的技术博客">
-<meta property="og:description" content="前言java语法相关 finalJava 中 final 字段的用法主要分为三类：  空白 final（Blank Final）    声明时不赋值，在构造器中赋值一次： 1234567public class Person &#123;      private final String name;      public Person(String name) &#123;">
+<meta property="og:description" content="前言java对象序列化与反序列化 序列化序列化（Serialization）：将 Java 对象转换为字节序列的过程（对象 → 字节） java原生序列化 实现 Serializable 接口  12345678910111213public class Person implements Serializable &#123;      private static final long ser">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-03-25T03:00:00.000Z">
-<meta property="article:modified_time" content="2026-04-05T14:09:08.450Z">
+<meta property="article:modified_time" content="2026-04-05T14:16:16.603Z">
 <meta property="article:author" content="你的名字">
 <meta property="article:tag" content="java">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>java相关 - visir的技术博客</title>
+  <title>java序列化与反序列化 - visir的技术博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -303,7 +303,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="java相关"></span>
+            <span id="subtitle" data-typed-text="java序列化与反序列化"></span>
           
         </div>
 
@@ -326,7 +326,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.7k 字
+          3.9k 字
         
       </span>
     
@@ -337,7 +337,7 @@
         
         
         
-          31 分钟
+          33 分钟
         
       </span>
     
@@ -376,36 +376,26 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">java相关</h1>
+            <h1 id="seo-header">java序列化与反序列化</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>java语法相关</p>
-<h1 id="final"><a href="#final" class="headerlink" title="final"></a>final</h1><p>Java 中 final 字段的用法主要分为三类：</p>
-<ol>
-<li>空白 final（Blank Final）</li>
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>java对象序列化与反序列化</p>
+<h1 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h1><p>序列化（Serialization）：将 Java 对象转换为字节序列的过程（对象 → 字节）</p>
+<h2 id="java原生序列化"><a href="#java原生序列化" class="headerlink" title="java原生序列化"></a>java原生序列化</h2><ol>
+<li>实现 Serializable 接口</li>
 </ol>
-<p>  声明时不赋值，在构造器中赋值一次：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;<br>      <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String name;<br><br>      <span class="hljs-keyword">public</span> <span class="hljs-title function_">Person</span><span class="hljs-params">(String name)</span> &#123;<br>          <span class="hljs-built_in">this</span>.name = name; <span class="hljs-comment">// 只赋值一次</span><br>      &#125;<br>  &#125;<br></code></pre></td></tr></table></figure>
-
-
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>      <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> <span class="hljs-number">1L</span>;<br><br>      <span class="hljs-keyword">private</span> String name;<br>      <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> age;<br>      <span class="hljs-keyword">private</span> <span class="hljs-keyword">transient</span> String password;  <span class="hljs-comment">// 不序列化</span><br><br>      <span class="hljs-keyword">public</span> <span class="hljs-title function_">Person</span><span class="hljs-params">(String name, <span class="hljs-type">int</span> age, String password)</span> &#123;<br>          <span class="hljs-built_in">this</span>.name = name;<br>          <span class="hljs-built_in">this</span>.age = age;<br>          <span class="hljs-built_in">this</span>.password = password;<br>      &#125;<br>  &#125;<br></code></pre></td></tr></table></figure>
 
 <ol start="2">
-<li>final 变量（Constant）</li>
+<li>序列化到文件</li>
 </ol>
-<p>  编译期常量，值不可改变：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Constants</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">double</span> <span class="hljs-variable">PI</span> <span class="hljs-operator">=</span> <span class="hljs-number">3.14159</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">MAX_SIZE</span> <span class="hljs-operator">=</span> <span class="hljs-number">100</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.io.*;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SerializeDemo</span> &#123;<br>      <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>          <span class="hljs-type">Person</span> <span class="hljs-variable">person</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-number">25</span>, <span class="hljs-string">&quot;secret&quot;</span>);<br><br>          <span class="hljs-comment">// 序列化（对象 → 字节流）</span><br>          <span class="hljs-type">ObjectOutputStream</span> <span class="hljs-variable">out</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectOutputStream</span>(<br>              <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileOutputStream</span>(<span class="hljs-string">&quot;person.ser&quot;</span>)<br>          );<br>          out.writeObject(person);<br>          out.close();<br>      &#125;<br>  &#125;<br></code></pre></td></tr></table></figure>
 
 
 
-<ol start="3">
-<li>final 引用</li>
-</ol>
-<p>  引用本身不可指向其他对象，但对象的内容可变：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;String&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br> list.add(<span class="hljs-string">&quot;item&quot;</span>);     <span class="hljs-comment">// OK，内容可变</span><br> list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(); <span class="hljs-comment">// 编译错误，引用不可变</span><br></code></pre></td></tr></table></figure>
-
-<h1 id="ArrayList-vs-数组-vs-LinkedList"><a href="#ArrayList-vs-数组-vs-LinkedList" class="headerlink" title="ArrayList vs 数组 vs LinkedList"></a>ArrayList vs 数组 vs LinkedList</h1><table>
+<h1 id="反序列化"><a href="#反序列化" class="headerlink" title="反序列化"></a>反序列化</h1><table>
 <thead>
 <tr>
 <th>特性</th>
@@ -652,8 +642,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>java相关</div>
-      <div>https://001visir.github.io/2025/03/25/java相关/</div>
+      <div>java序列化与反序列化</div>
+      <div>https://001visir.github.io/2025/03/25/java序列化与反序列化/</div>
     </div>
     <div class="license-meta">
       
@@ -697,9 +687,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/03/25/java%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="java序列化与反序列化">
+                      <a href="/2025/03/28/2025-03-28-mysql-transaction-isolation/" title="MySQL 事务隔离级别详解">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">java序列化与反序列化</span>
+                        <span class="hidden-mobile">MySQL 事务隔离级别详解</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -707,8 +697,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/03/05/2025-03-05-redis-distributed-lock/" title="Redis 如何实现分布式锁">
-                        <span class="hidden-mobile">Redis 如何实现分布式锁</span>
+                      <a href="/2025/03/25/java%E7%9B%B8%E5%85%B3/" title="java相关">
+                        <span class="hidden-mobile">java相关</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
