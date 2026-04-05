@@ -333,6 +333,197 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/08/22/2024-08-22-mysql-index-failure/" target="_self">
+          MySQL 索引失效的几种情况
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/08/22/2024-08-22-mysql-index-failure/" target="_self">
+        <div>
+          前言建了索引但查询没走索引，这是 MySQL 开发中很常见的问题。了解什么情况下索引会失效，是优化 SQL 的基础。 1. 使用左模糊查询 %xxx12345-- 索引失效SELECT * FROM users WHERE name LIKE &#x27;%visir&#x27;;-- 索引生效（尽量使用右模糊）SELECT * FROM users WHERE name LIKE &#x27;v
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-08-22 10:00" pubdate>
+              2024-08-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/" class="category-chain-item">后端技术</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">#MySQL</a>
+            
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/07/10/2024-07-10-redis-cache-problems/" target="_self">
+          Redis 缓存穿透、击穿、雪崩详解
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/10/2024-07-10-redis-cache-problems/" target="_self">
+        <div>
+          前言使用 Redis 做缓存时，有三个经典问题必须了解：缓存穿透、缓存击穿、缓存雪崩。它们分别是什么？怎么解决？ 1. 缓存穿透问题：查询一个不存在的数据，缓存查不到，数据库也查不到，请求每次都打到数据库。 危害：恶意攻击者用大量不存在的 key 频繁查询，让数据库压力过大。 解决方案方案一：参数校验在接口层做基本的数据校验，过滤掉明显非法 id，比如 id &lt;&#x3D; 0 的直接 re
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-07-10 15:30" pubdate>
+              2024-07-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/" class="category-chain-item">后端技术</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+              <a href="/tags/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/">#后端技术</a>
+            
+              <a href="/tags/%E7%BC%93%E5%AD%98/">#缓存</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/05/30/2024-05-30-redis-data-structures/" target="_self">
+          Redis 5 种数据结构详解
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/30/2024-05-30-redis-data-structures/" target="_self">
+        <div>
+          前言Redis 之所以快，是因为它把数据都放在内存里。但更重要的是它提供了丰富的数据结构，能高效地解决各种业务问题。 1. String（字符串）最基本的数据类型，Memcached 也只支持这一种。 常用命令12345678910SET name &quot;visir&quot;           # 设置值GET name                   # 获取值MSET a 1 b
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-05-30 11:00" pubdate>
+              2024-05-30
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/" class="category-chain-item">后端技术</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Redis/">#Redis</a>
+            
+              <a href="/tags/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/">#后端技术</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/04/25/2024-04-25-ioc-and-di/" target="_self">
           轻松理解 IoC 和 DI
         </a>
@@ -380,9 +571,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Spring/">#Spring</a>
-            
               <a href="/tags/%E5%90%8E%E7%AB%AF%E6%A1%86%E6%9E%B6/">#后端框架</a>
+            
+              <a href="/tags/Spring/">#Spring</a>
             
           </div>
         
@@ -443,9 +634,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E5%90%8E%E7%AB%AF%E6%A1%86%E6%9E%B6/">#后端框架</a>
-            
               <a href="/tags/Spring-Boot/">#Spring Boot</a>
+            
+              <a href="/tags/%E5%90%8E%E7%AB%AF%E6%A1%86%E6%9E%B6/">#后端框架</a>
             
           </div>
         

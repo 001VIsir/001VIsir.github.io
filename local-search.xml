@@ -85,6 +85,33 @@
   
   
   <entry>
+    <title>笔试错题本</title>
+    <link href="/2026/03/01/%E5%B0%8F%E9%BB%91%E7%9B%92%E7%AC%94%E8%AF%95/"/>
+    <url>/2026/03/01/%E5%B0%8F%E9%BB%91%E7%9B%92%E7%AC%94%E8%AF%95/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1"><a href="#1" class="headerlink" title="1"></a>1</h2><p>你在玩一个横版游戏。</p><p>横版游戏由<strong>N+1</strong>个连续的格子组成。编号 0 的格子为起始点，编号 N的格子为终点。</p><p>从起点开始, 每次你最多可以往右移动<strong>x</strong>步（1～x 任意步都可以）。比如你在位置 1, 如果往右移动 x 步，下一个位置为 x+1。当你每次移动到某个格子的时候, 会收到伤害为Ti</p><p>请计算从格子<strong>0</strong>走到 <strong>N</strong>，能够受到的最少总伤害。</p><p><code>T[i]</code> 的计算方式如下：</p><figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs pf">T[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span><br><span class="hljs-keyword">state</span> = seed<br><span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span> <span class="hljs-keyword">to</span> N:<br>    <span class="hljs-keyword">state</span> = (<span class="hljs-keyword">state</span> * <span class="hljs-number">1103515245</span> + <span class="hljs-number">12345</span>) % <span class="hljs-number">2</span>^<span class="hljs-number">31</span><br>    T[i] = <span class="hljs-number">1</span> + (<span class="hljs-keyword">state</span> % M)<br></code></pre></td></tr></table></figure><p>补充说明，参数取值范围:</p><p>1≤N≤500000<br>1≤x≤500000<br>0≤seed≤231−1<br>1≤M≤109</p><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol><li>dp+贪心维护，类似于leetcode#45.跳跃游戏<a href="https://leetcode.cn/problems/jump-game-ii/description/?envType=study-plan-v2&envId=top-100-liked">https://leetcode.cn/problems/jump-game-ii/description/?envType=study-plan-v2&amp;envId=top-100-liked</a></li></ol><h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">lengthOfLIS</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span> &#123;<br>        <br>    &#125;<br>  <br>  <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span>&#123;<br>    <span class="hljs-keyword">if</span>(num &lt; <span class="hljs-number">2</span>)<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(num == <span class="hljs-number">2</span>)<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    <br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; i &lt;= Math.sqrt(num); ++i)&#123;<br>      <span class="hljs-keyword">if</span>(num % i == <span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p>时间：n^2</p><p>空间：n</p><h2 id="2"><a href="#2" class="headerlink" title="2"></a>2</h2><p>你一个数组，请你找出这个数组里的最短连续子序列，使其的LCM（最小公倍数）等于整个数组的最小公倍数，输出它的长度</p><h2 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h2><ol><li><p>这道题用滑动窗口解决：</p><pre><code class="hljs">1. 先算出整个数组的 LCM（目标值）2. 用滑动窗口找最短的连续子序列，使它的 LCM 等于目标值3. 关键点：LCM(子序列) ≤ LCM(全数组)，所以子序列 LCM 不可能超过目标值</code></pre></li><li><p>GCD（最大公约数）- 欧几里得算法</p><p>  原理：gcd(a, b) &#x3D; gcd(b, a % b)</p><p>  核心思想：两个数的最大公约数，等于较小数和两数相除余数的最大公约数。</p><p>  举例：gcd(12, 8)<br>  gcd(12, 8) &#x3D; gcd(8, 12%8) &#x3D; gcd(8, 4)<br>  gcd(8, 4)  &#x3D; gcd(4, 8%4)  &#x3D; gcd(4, 0)<br>  当 b&#x3D;0 时，返回 a &#x3D; 4</p></li><li><p>LCM（最小公倍数）</p><p>  公式：LCM(a, b) &#x3D; a × b &#x2F; GCD(a, b)</p><p>  推导：<br>  a &#x3D; gcd × x<br>  b &#x3D; gcd × y    （x 和 y 互质）</p><p>  a × b &#x3D; gcd² × x × y<br>  LCM  &#x3D; gcd × x × y &#x3D; a × b &#x2F; gcd</p><p>  先除后乘是为了防止溢出（比如 a&#x3D;10^9, b&#x3D;10^9 直接乘会超过 long 范围）。</p></li></ol><h2 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>      <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findShortestSubArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> &#123;<br>          <span class="hljs-type">long</span> <span class="hljs-variable">targetLCM</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];<br>          <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) &#123;<br>              targetLCM = lcm(targetLCM, num);<br>          &#125;<br><br>          <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;<br>          <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>          <span class="hljs-type">long</span> <span class="hljs-variable">curLCM</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>          <span class="hljs-type">int</span> <span class="hljs-variable">minLen</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE;<br><br>          <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; right &lt; n; right++) &#123;<br>              curLCM = lcm(curLCM, nums[right]);<br><br>              <span class="hljs-comment">// 达到目标后，尝试收缩</span><br>              <span class="hljs-keyword">while</span> (curLCM == targetLCM) &#123;<br>                  minLen = Math.min(minLen, right - left + <span class="hljs-number">1</span>);<br>                  <span class="hljs-comment">// 重新计算，去掉 left</span><br>                  curLCM = <span class="hljs-number">1</span>;<br>                  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> left + <span class="hljs-number">1</span>; i &lt;= right; i++) &#123;<br>                      curLCM = lcm(curLCM, nums[i]);<br>                  &#125;<br>                  left++;<br>              &#125;<br>          &#125;<br><br>          <span class="hljs-keyword">return</span> minLen;<br>      &#125;<br><br>      <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> <span class="hljs-title function_">lcm</span><span class="hljs-params">(<span class="hljs-type">long</span> a, <span class="hljs-type">long</span> b)</span> &#123;<br>          <span class="hljs-keyword">return</span> a / gcd(a, b) * b;<br>      &#125;<br><br>      <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> <span class="hljs-title function_">gcd</span><span class="hljs-params">(<span class="hljs-type">long</span> a, <span class="hljs-type">long</span> b)</span> &#123;<br>          <span class="hljs-keyword">return</span> b == <span class="hljs-number">0</span> ? a : gcd(b, a % b);<br>      &#125;<br>  &#125;<br></code></pre></td></tr></table></figure><h2 id="复杂度-1"><a href="#复杂度-1" class="headerlink" title="复杂度"></a>复杂度</h2><p>时间：n^2</p><p>空间：1</p><span id="more"></span>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>算法</tag>
+      
+      <tag>笔试</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>微服务架构入门：什么是微服务</title>
     <link href="/2025/11/20/2025-11-20-microservices-intro/"/>
     <url>/2025/11/20/2025-11-20-microservices-intro/</url>
@@ -157,9 +184,9 @@
     
     <tags>
       
-      <tag>Spring</tag>
-      
       <tag>后端框架</tag>
+      
+      <tag>Spring</tag>
       
     </tags>
     
@@ -189,6 +216,33 @@
       <tag>数据库</tag>
       
       <tag>SQL优化</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>elasticsearch相关</title>
+    <link href="/2025/07/25/elasticsearch/"/>
+    <url>/2025/07/25/elasticsearch/</url>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Elasticsearch 是一个基于 Apache Lucene 的分布式搜索和分析引擎，是 ELK : （Elasticsearch、Logstash、Kibana）的核心组件。</p><h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><table><thead><tr><th>概念</th><th align="center">说明</th></tr></thead><tbody><tr><td>Index（索引）</td><td align="center">类似数据库，包含多篇文档</td></tr><tr><td>Document（文档）</td><td align="center">类似数据库中的一行记录，JSON格式</td></tr><tr><td>Shard（分片）</td><td align="center">索引的水平拆分单元，可分布式存储</td></tr><tr><td>Replica（副本）</td><td align="center">分片的副本，保证高可用和读取吞吐</td></tr></tbody></table><h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><ul><li>倒排索引：核心存储结构，term → doc 映射</li><li>Lucene：底层搜索引擎库，负责索引和检索</li></ul><h2 id="主要特点"><a href="#主要特点" class="headerlink" title="主要特点"></a>主要特点</h2><ol><li>实时搜索：新增数据秒级可查（NRT ~1s）</li><li>分布式：天然水平扩展，支持 PB 级数据</li><li>全文检索：支持分词、模糊匹配、短语查询</li><li>聚合分析：Facet、Aggregation（求和、平均、百分比等）</li><li>高可用：副本分片自动 failover</li><li>RESTful API：JSON over HTTP，跨语言友好</li></ol><h2 id="典型应用场景"><a href="#典型应用场景" class="headerlink" title="典型应用场景"></a>典型应用场景</h2><table><thead><tr><th>场景</th><th align="center">说明</th></tr></thead><tbody><tr><td>全文搜索</td><td align="center">电商搜索、企业文档搜索</td></tr><tr><td>日志分析</td><td align="center">ELK日志采集分析</td></tr><tr><td>应用性能监控</td><td align="center">APM</td></tr><tr><td>安全分析</td><td align="center">SIEM、威胁检测</td></tr><tr><td>地理位置搜索</td><td align="center">附近地点查询</td></tr></tbody></table><h2 id="核心机制"><a href="#核心机制" class="headerlink" title="核心机制"></a>核心机制</h2><p>Elasticsearch（基于 Apache Lucene）通过以下核心机制实现极快的查询速度：</p><ol><li><strong>倒排索引（Inverted Index）</strong></li></ol><p>  这是最核心的结构。与正排索引（doc → terms）相反，倒排索引按 term 存储对应的<br>  doc 列表：</p><p>  term “apple”    → [doc1, doc3, doc7]<br>  term “banana”  → [doc2, doc5]</p><p>  查询时直接通过 term 找到文档，无需扫描全量数据，时间复杂度从 O(n) 降到 O(1) 或<br>   O(log n)。</p><ol start="2"><li><strong>段（Segment）架构</strong></li></ol><ul><li>索引数据被分成多个 immutable 的段</li><li>写入时先到内存 buffer，定期刷到磁盘生成新段</li><li>段一旦生成就不修改（只读），避免了随机写入</li><li>后台定期合并小段为大段，减少段数量</li></ul><ol start="3"><li>多种缓存机制</li></ol><table><thead><tr><th>缓存类型</th><th>作用</th></tr></thead><tbody><tr><td>Node Query Cache</td><td>存查询结果（按节点）</td></tr><tr><td>Shard Request Cache</td><td>缓存分片级别查询结果</td></tr><tr><td>Fielddata</td><td>聚合&#x2F;排序的列式存储</td></tr><tr><td>Doc Values</td><td>磁盘上的列式存储，比 Fielddata 节省内存</td></tr><tr><td>系统页缓存（Page Cache）</td><td>OS 层 MMap 加速磁盘读写</td></tr></tbody></table><ol start="4"><li>分布式并行搜索</li></ol><ul><li>索引分为主副分片，查询可并行在所有分片上执行</li><li>协调节点（Coordinating Node）汇总各分片结果</li><li>副本分片同时提供读写分离，提升吞吐</li></ul><ol start="5"><li>向量化与跳过式扫描</li></ol><ul><li>Lucene 使用 Block Max WAND 等算法跳过不相关文档</li><li>支持布尔查询、短语查询、范围查询等多种优化路径</li><li>数值类型和日期类型使用 BKD 树加速范围查询</li></ul><ol start="6"><li>Near Real-Time (NRT) 查询</li></ol><p>  新增文档写入内存 buffer 和 transact log，不立即刷盘，通过 refresh interval（约1s）生成新段即可见，实现秒级近实时搜索。</p><hr><p>  简而言之：倒排索引 + 不可变段 + 多级缓存 + 并行分片搜索 + 智能算法优化 &#x3D; ES的极速查询能力。</p><h2 id="生态组件"><a href="#生态组件" class="headerlink" title="生态组件"></a>生态组件</h2><p>  Logstash   → 数据采集、ETL<br>  Beats      → 轻量级数据采集<br>  Elasticsearch → 存储、搜索、分析<br>  Kibana     → 可视化</p><h2 id="架构示意"><a href="#架构示意" class="headerlink" title="架构示意"></a>架构示意</h2><p>  客户端请求<br>      ↓<br>  协调节点（Coordinating Node）<br>      ↓<br>  数据节点（Data Node）<br>  ├── 分片 1 (Primary) → 副本 1 (Replica)<br>  ├── 分片 2 (Primary) → 副本 2 (Replica)<br>  └── 分片 3 (Primary) → 副本 3 (Replica)</p><hr><p>  简单来说，Elasticsearch就是为大规模数据搜索和分析而生的分布式数据库，核心优势在于倒排索引 + 分布式架构带来的高速检索能力。</p><span id="more"></span>]]></content>
+    
+    
+    <categories>
+      
+      <category>后端技术</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数据库</tag>
+      
+      <tag>elasticsearch</tag>
       
     </tags>
     
@@ -271,9 +325,9 @@
     
     <tags>
       
-      <tag>后端框架</tag>
-      
       <tag>Spring Boot</tag>
+      
+      <tag>后端框架</tag>
       
     </tags>
     
@@ -303,6 +357,31 @@
       <tag>数据库</tag>
       
       <tag>事务</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>java相关</title>
+    <link href="/2025/03/25/java%E7%9B%B8%E5%85%B3/"/>
+    <url>/2025/03/25/java%E7%9B%B8%E5%85%B3/</url>
+    
+    <content type="html"><![CDATA[<p>#前言</p><p>java语法相关</p><h1 id="final"><a href="#final" class="headerlink" title="final"></a>final</h1><p>Java 中 final 字段的用法主要分为三类：</p><ol><li>空白 final（Blank Final）</li></ol><p>  声明时不赋值，在构造器中赋值一次：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;<br>      <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String name;<br><br>      <span class="hljs-keyword">public</span> <span class="hljs-title function_">Person</span><span class="hljs-params">(String name)</span> &#123;<br>          <span class="hljs-built_in">this</span>.name = name; <span class="hljs-comment">// 只赋值一次</span><br>      &#125;<br>  &#125;<br></code></pre></td></tr></table></figure><ol start="2"><li>final 变量（Constant）</li></ol><p>  编译期常量，值不可改变：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Constants</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">double</span> <span class="hljs-variable">PI</span> <span class="hljs-operator">=</span> <span class="hljs-number">3.14159</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">MAX_SIZE</span> <span class="hljs-operator">=</span> <span class="hljs-number">100</span>;<br>&#125;<br></code></pre></td></tr></table></figure><ol start="3"><li>final 引用</li></ol><p>  引用本身不可指向其他对象，但对象的内容可变：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;String&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br> list.add(<span class="hljs-string">&quot;item&quot;</span>);     <span class="hljs-comment">// OK，内容可变</span><br> list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(); <span class="hljs-comment">// 编译错误，引用不可变</span><br></code></pre></td></tr></table></figure><h1 id="ArrayList-vs-数组-vs-LinkedList"><a href="#ArrayList-vs-数组-vs-LinkedList" class="headerlink" title="ArrayList vs 数组 vs LinkedList"></a>ArrayList vs 数组 vs LinkedList</h1><table><thead><tr><th>特性</th><th align="center">数组</th><th align="center">ArrayList</th><th align="center">LinkedList</th></tr></thead><tbody><tr><td>初始化机会</td><td align="center">固定</td><td align="center">动态扩展</td><td align="center">动态扩展</td></tr><tr><td>存储方式</td><td align="center">连续内存</td><td align="center">连续内存（Object[]）</td><td align="center">链表节点（离散内存）</td></tr><tr><td>随机访问</td><td align="center">1</td><td align="center">1</td><td align="center">n</td></tr><tr><td>头部删除&#x2F;插入</td><td align="center">n</td><td align="center">n</td><td align="center">1</td></tr><tr><td>尾部插入&#x2F;删除</td><td align="center">1</td><td align="center">1</td><td align="center">1</td></tr><tr><td>中间插入&#x2F;删除</td><td align="center">n</td><td align="center">n</td><td align="center">n</td></tr><tr><td>内存占用</td><td align="center">低</td><td align="center">Object开销</td><td align="center">每个节点多两个引用</td></tr></tbody></table><h2 id="核心区别"><a href="#核心区别" class="headerlink" title="核心区别"></a>核心区别</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//数组</span><br><span class="hljs-type">int</span>[] arr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">10</span>];  <span class="hljs-comment">// 固定大小，连续内存</span><br>  arr[<span class="hljs-number">5</span>] = <span class="hljs-number">100</span>;             <span class="hljs-comment">// O(1) 随机访问</span><br><br> <span class="hljs-comment">// ArrayList</span><br>  ArrayList&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>  list.add(<span class="hljs-number">100</span>);           <span class="hljs-comment">// 自动扩容</span><br>  list.get(<span class="hljs-number">5</span>);             <span class="hljs-comment">// O(1) 随机访问</span><br><br>  <span class="hljs-comment">//LinkedList</span><br>  LinkedList&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();<br>  list.addFirst(<span class="hljs-number">100</span>);      <span class="hljs-comment">// O(1) 头部插入</span><br>  list.get(<span class="hljs-number">5</span>);             <span class="hljs-comment">// O(n) 需遍历</span><br></code></pre></td></tr></table></figure><h2 id="典型应用场景"><a href="#典型应用场景" class="headerlink" title="典型应用场景"></a>典型应用场景</h2><table><thead><tr><th>场景</th><th align="center">说明</th></tr></thead><tbody><tr><td>固定大小、高频随机访问</td><td align="center">数组</td></tr><tr><td>需要动态增长、高频随机访问</td><td align="center">ArrayList</td></tr><tr><td>高频头尾插入删除</td><td align="center">LinkedList</td></tr><tr><td>中间插入删除为主</td><td align="center">ArrayList</td></tr></tbody></table><h2 id="核心机制"><a href="#核心机制" class="headerlink" title="核心机制"></a>核心机制</h2><p>ArrayList：基于 Object[]，扩容时创建新数组（1.5倍），复制元素</p><p>LinkedList：基于双向链表（Node prev&#x2F;item&#x2F;next），无容量概念</p><p>性能关键：ArrayList 的连续内存带来更好的 CPU 缓存命中率，实际通常比 LinkedList 快。</p><span id="more"></span>]]></content>
+    
+    
+    <categories>
+      
+      <category>后端技术</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>java</tag>
       
     </tags>
     
@@ -580,9 +659,9 @@
     
     <tags>
       
-      <tag>Spring</tag>
-      
       <tag>后端框架</tag>
+      
+      <tag>Spring</tag>
       
     </tags>
     
@@ -607,9 +686,9 @@
     
     <tags>
       
-      <tag>后端框架</tag>
-      
       <tag>Spring Boot</tag>
+      
+      <tag>后端框架</tag>
       
     </tags>
     
