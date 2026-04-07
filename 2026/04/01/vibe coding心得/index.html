@@ -19,24 +19,23 @@
   <meta name="author" content="你的名字">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前言使用 Redis 做缓存时，有三个经典问题必须了解：缓存穿透、缓存击穿、缓存雪崩。它们分别是什么？怎么解决？ 1. 缓存穿透问题：查询一个不存在的数据，缓存查不到，数据库也查不到，请求每次都打到数据库。 危害：恶意攻击者用大量不存在的 key 频繁查询，让数据库压力过大。 解决方案方案一：参数校验在接口层做基本的数据校验，过滤掉明显非法 id，比如 id &lt;&#x3D; 0 的直接 re">
+    <meta name="description" content="前言前几个月还没有现在的openclaw的时候，我都是用&#x3D;&#x3D;claude code + 任务循环脚本&#x3D;&#x3D; 去生产项目，但是随着coding cli的插件越来越丰富，现在似乎用不着了 实测下来用opencode + claude code配合去做项目似乎比单一使用要好用？感觉claude code在做计划的时候还是很好用的，但是实际编写代码的时候会变得有些笨，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis 缓存穿透、击穿、雪崩详解">
-<meta property="og:url" content="https://001visir.github.io/2024/07/10/2024-07-10-redis-cache-problems/index.html">
+<meta property="og:title" content="vibe coding心得">
+<meta property="og:url" content="https://001visir.github.io/2026/04/01/vibe%20coding%E5%BF%83%E5%BE%97/index.html">
 <meta property="og:site_name" content="visir的技术博客">
-<meta property="og:description" content="前言使用 Redis 做缓存时，有三个经典问题必须了解：缓存穿透、缓存击穿、缓存雪崩。它们分别是什么？怎么解决？ 1. 缓存穿透问题：查询一个不存在的数据，缓存查不到，数据库也查不到，请求每次都打到数据库。 危害：恶意攻击者用大量不存在的 key 频繁查询，让数据库压力过大。 解决方案方案一：参数校验在接口层做基本的数据校验，过滤掉明显非法 id，比如 id &lt;&#x3D; 0 的直接 re">
+<meta property="og:description" content="前言前几个月还没有现在的openclaw的时候，我都是用&#x3D;&#x3D;claude code + 任务循环脚本&#x3D;&#x3D; 去生产项目，但是随着coding cli的插件越来越丰富，现在似乎用不着了 实测下来用opencode + claude code配合去做项目似乎比单一使用要好用？感觉claude code在做计划的时候还是很好用的，但是实际编写代码的时候会变得有些笨，">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-07-10T07:30:00.000Z">
-<meta property="article:modified_time" content="2026-03-31T11:10:11.489Z">
+<meta property="article:published_time" content="2026-04-01T03:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-07T22:06:18.628Z">
 <meta property="article:author" content="你的名字">
-<meta property="article:tag" content="Redis">
-<meta property="article:tag" content="后端技术">
-<meta property="article:tag" content="缓存">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="大模型">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Redis 缓存穿透、击穿、雪崩详解 - visir的技术博客</title>
+  <title>vibe coding心得 - visir的技术博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -305,7 +304,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Redis 缓存穿透、击穿、雪崩详解"></span>
+            <span id="subtitle" data-typed-text="vibe coding心得"></span>
           
         </div>
 
@@ -316,8 +315,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-07-10 15:30" pubdate>
-          2024年7月10日 下午
+        <time datetime="2026-04-01 11:00" pubdate>
+          2026年4月1日 上午
         </time>
       </span>
     
@@ -328,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          1k 字
         
       </span>
     
@@ -339,7 +338,7 @@
         
         
         
-          14 分钟
+          9 分钟
         
       </span>
     
@@ -378,61 +377,30 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Redis 缓存穿透、击穿、雪崩详解</h1>
+            <h1 id="seo-header">vibe coding心得</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>使用 Redis 做缓存时，有三个经典问题必须了解：缓存穿透、缓存击穿、缓存雪崩。它们分别是什么？怎么解决？</p>
-<h2 id="1-缓存穿透"><a href="#1-缓存穿透" class="headerlink" title="1. 缓存穿透"></a>1. 缓存穿透</h2><p><strong>问题</strong>：查询一个不存在的数据，缓存查不到，数据库也查不到，请求每次都打到数据库。</p>
-<p><strong>危害</strong>：恶意攻击者用大量不存在的 key 频繁查询，让数据库压力过大。</p>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p><strong>方案一：参数校验</strong><br>在接口层做基本的数据校验，过滤掉明显非法 id，比如 id &lt;&#x3D; 0 的直接 reject。</p>
-<p><strong>方案二：缓存空值</strong><br>把查询结果为空的值也缓存起来，key 是查询条件，value 是空字符串或 null，过期时间设置短一些（比如 60 秒）。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;user:&quot;</span> + id;<br><span class="hljs-type">String</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> redis.get(key);<br><span class="hljs-keyword">if</span> (value == <span class="hljs-literal">null</span>) &#123;<br>    <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> db.findById(id);<br>    <span class="hljs-keyword">if</span> (user == <span class="hljs-literal">null</span>) &#123;<br>        redis.setex(key, <span class="hljs-number">60</span>, <span class="hljs-string">&quot;&quot;</span>);  <span class="hljs-comment">// 缓存空值</span><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        redis.set(key, JSON.toJSONString(user));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p><strong>方案三：布隆过滤器（Bloom Filter）</strong><br>把所有存在的 key 存入布隆过滤器，查询前先判断 key 是否可能存在。布隆过滤器判断不存在的 key 一定不存在，判断存在的 key 可能不存在（假阳性）。适合数据量极大、内存有限的场景。</p>
-<h2 id="2-缓存击穿"><a href="#2-缓存击穿" class="headerlink" title="2. 缓存击穿"></a>2. 缓存击穿</h2><p><strong>问题</strong>：某个热点 key 突然过期或失效的瞬间，大量请求同时涌入直接打数据库。</p>
-<p><strong>特点</strong>：只有某一个热点 key 失效，并发量集中在这一 key 上。</p>
-<h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p><strong>方案一：互斥锁（分布式锁）</strong><br>只有一个线程去查数据库重建缓存，其他线程等待。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> redis.get(key);<br><span class="hljs-keyword">if</span> (value == <span class="hljs-literal">null</span>) &#123;<br>    <span class="hljs-comment">// SETNX + EXPIRE 是原子操作</span><br>    <span class="hljs-type">String</span> <span class="hljs-variable">lockKey</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;lock:&quot;</span> + key;<br>    <span class="hljs-keyword">if</span> (redis.setnx(lockKey, <span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-number">30</span>)) &#123;<br>        <span class="hljs-comment">// 只有获取到锁的线程去查数据库</span><br>        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> db.findById(id);<br>        redis.set(key, JSON.toJSONString(user));<br>        redis.del(lockKey);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 没获取到锁，短暂等待后重试</span><br>        Thread.sleep(<span class="hljs-number">50</span>);<br>        <span class="hljs-keyword">return</span> redis.get(key);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p><strong>方案二：热点数据永不过期</strong><br>物理上不设置过期时间，过期时间存在 key 对应的 value 中。异步更新缓存时检查是否接近过期。这种方案需要额外逻辑控制，复杂度较高。</p>
-<h2 id="3-缓存雪崩"><a href="#3-缓存雪崩" class="headerlink" title="3. 缓存雪崩"></a>3. 缓存雪崩</h2><p><strong>问题</strong>：大量缓存 key 在同一时间过期，或者 Redis 本身宕机，导致大量请求同时打到数据库。</p>
-<h3 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h3><p><strong>方案一：过期时间随机化</strong><br>给缓存过期时间加一个随机偏移量，避免大量 key 同时过期。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 原：expire = 3600</span><br><span class="hljs-comment">// 改：expire = 3600 + random(0, 600)  // 1小时 ~ 1小时10分钟</span><br></code></pre></td></tr></table></figure>
-
-<p><strong>方案二：双层缓存策略</strong><br>本地缓存（EhCache&#x2F;Caffeine）+ Redis 缓存。本地缓存作为备份，即使 Redis 过期，本地缓存还能撑一段时间。</p>
-<p><strong>方案三：Redis 高可用</strong><br>搭建 Redis Sentinel（主从 + 哨兵）或 Redis Cluster，避免 Redis 单点故障导致雪崩。</p>
-<p><strong>方案四：服务熔级降级</strong><br>缓存服务不可用时，使用 hystrix&#x2F;sentinel 等限流组件对数据库进行保护，限制并发数。</p>
-<p><strong>方案五：提前演练</strong><br>在生产环境中提前做缓存失效演练，验证系统的容错能力。</p>
-<h2 id="三种问题对比"><a href="#三种问题对比" class="headerlink" title="三种问题对比"></a>三种问题对比</h2><table>
-<thead>
-<tr>
-<th>问题</th>
-<th>原因</th>
-<th>特点</th>
-<th>核心解决思路</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>穿透</td>
-<td>查询不存在的数据</td>
-<td>每次都打数据库</td>
-<td>空值缓存 &#x2F; 布隆过滤器</td>
-</tr>
-<tr>
-<td>击穿</td>
-<td>热点 key 失效</td>
-<td>某一个 key 并发高</td>
-<td>互斥锁 &#x2F; 永不过期</td>
-</tr>
-<tr>
-<td>雪崩</td>
-<td>大量 key 同时失效</td>
-<td>大面积请求打数据库</td>
-<td>过期时间随机 &#x2F; 多级缓存</td>
-</tr>
-</tbody></table>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>前几个月还没有现在的openclaw的时候，我都是用&#x3D;&#x3D;claude code + 任务循环脚本&#x3D;&#x3D; 去生产项目，但是随着coding cli的插件越来越丰富，现在似乎用不着了</p>
+<p>实测下来用opencode + claude code配合去做项目似乎比单一使用要好用？感觉claude code在做计划的时候还是很好用的，但是实际编写代码的时候会变得有些笨，而opencode + ohmyopencode能使他内置一些写的很好的智能体提示词(sis)，打通了完整的生产链路，唯一需要担心的就是上下文过长的问题，不过这个也可以通过定期&#x2F;compact解决</p>
+<h1 id="claude-code-脚本"><a href="#claude-code-脚本" class="headerlink" title="claude code + 脚本"></a>claude code + 脚本</h1><p>要点：</p>
+<ol>
+<li>首先学习spec范式让claude code编写featur_list.md以及progress.md文件，这一步主要是为了能让不同的窗口读取到任务进度，达到伪上下文的作用</li>
+<li>设定任务这一块可以分得再细一些，一般30个feature差不多了，再多有点浪费时间</li>
+<li>让它自己编写一个脚本，这个脚本有以下内容：<ol>
+<li>给他设定一些提示词，这个提示词可以学习anthropic官方文档有一篇技巧（忘了题目叫什么了），总之给他的设定是一个软件工程师之类的，他必须认真完成我的指令，每次只执行一个任务，并且这个任务需要将文档编写、代码生成、单元测试在一次对话中完成</li>
+<li>每一次任务完成，自动打开新的power shell，进入新的对话中，然后继续从步骤1开始直到feature_list.md完全结束</li>
+</ol>
+</li>
+<li>之所以每一次任务都要重新打开一个对话主要是为了刷新上下文，因为任务设置的比较密集，很容易出现上下文溢出的情况，既浪费token又会增加幻觉，干脆直接开新的重新来，新对话通过读取progress.md中的内容自主决定接下来的工作</li>
+</ol>
+<h1 id="claude-code-opencode"><a href="#claude-code-opencode" class="headerlink" title="claude code + opencode"></a>claude code + opencode</h1><ol>
+<li>给claude code 安装一个插件叫做everything-claude-code，这个里面包含了很多非常好用的skills和plugins，还有一些hooks，似乎是最近harness coding比较流行的代码监督功能，不过我用下来好像没区别？</li>
+<li>给opencode安装一个插件叫做ohmyopencode，这个插件能省下来很多提示词的编写时间，还能多出很多模式（原生只有plan 和 code，感觉不是很好用）</li>
+<li>给claude code 配置一个比较好用（贵）的大模型，让它做plan和code review</li>
+<li>给oc配置比较便宜的模型，用来代码生成和测试</li>
+</ol>
 <span id="more"></span>
 
                 
@@ -452,7 +420,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/" class="category-chain-item">后端技术</a>
+  <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/" class="category-chain-item">技术笔记</a>
   
   
 
@@ -467,11 +435,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Redis/" class="print-no-link">#Redis</a>
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
       
-        <a href="/tags/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/" class="print-no-link">#后端技术</a>
-      
-        <a href="/tags/%E7%BC%93%E5%AD%98/" class="print-no-link">#缓存</a>
+        <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="print-no-link">#大模型</a>
       
     </div>
   
@@ -483,8 +449,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Redis 缓存穿透、击穿、雪崩详解</div>
-      <div>https://001visir.github.io/2024/07/10/2024-07-10-redis-cache-problems/</div>
+      <div>vibe coding心得</div>
+      <div>https://001visir.github.io/2026/04/01/vibe coding心得/</div>
     </div>
     <div class="license-meta">
       
@@ -496,7 +462,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年7月10日</div>
+          <div>2026年4月1日</div>
         </div>
       
       
@@ -528,9 +494,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/08/22/2024-08-22-mysql-index-failure/" title="MySQL 索引失效的几种情况">
+                      <a href="/2026/04/03/java%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="java序列化与反序列化">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">MySQL 索引失效的几种情况</span>
+                        <span class="hidden-mobile">java序列化与反序列化</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -538,8 +504,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/05/30/2024-05-30-redis-data-structures/" title="Redis 5 种数据结构详解">
-                        <span class="hidden-mobile">Redis 5 种数据结构详解</span>
+                      <a href="/2026/03/31/leetcode105/" title="leetcode105">
+                        <span class="hidden-mobile">leetcode105</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
