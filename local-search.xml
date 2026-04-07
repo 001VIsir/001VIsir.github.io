@@ -31,6 +31,46 @@
   
   
   <entry>
+    <title></title>
+    <link href="/2026/04/08/%E6%8B%9B%E5%95%86%E9%93%B6%E8%A1%8C%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/"/>
+    <url>/2026/04/08/%E6%8B%9B%E5%95%86%E9%93%B6%E8%A1%8C%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/</url>
+    
+    <content type="html"><![CDATA[<p>面试官好，我的名字是韦汉鑫，是北京邮电大学2026届毕业生，在校期间，我主要从事服务器后端开发以及AI应用、Agent相关产品应用开发的学习和实践。同时，我自认为是一个执行力强、富有责任感的人，在校党委团委新媒体部门负责学校重大会议及活动的影像记录工作，偶尔也负责学校官方公众号的宣传工作。同时我也喜欢研究电脑技术，善于使用AI工具来提升工作效率。招商银行</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>leetcode23</title>
+    <link href="/2026/04/08/leetcode23/"/>
+    <url>/2026/04/08/leetcode23/</url>
+    
+    <content type="html"><![CDATA[<h2 id="23-合并K个有序链表"><a href="#23-合并K个有序链表" class="headerlink" title="#23 合并K个有序链表"></a>#23 合并K个有序链表</h2><p>给你一个链表数组，每个链表都已经按升序排列。</p><p>请你将所有链表合并到一个升序链表中，返回合并后的链表。</p><p><strong>示例 1：</strong></p><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs clean">输入：lists = [[<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>]]<br>输出：[<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>]<br>解释：链表数组如下：<br>[<br>  <span class="hljs-number">1</span>-&gt;<span class="hljs-number">4</span>-&gt;<span class="hljs-number">5</span>,<br>  <span class="hljs-number">1</span>-&gt;<span class="hljs-number">3</span>-&gt;<span class="hljs-number">4</span>,<br>  <span class="hljs-number">2</span>-&gt;<span class="hljs-number">6</span><br>]<br>将它们合并到一个有序链表中得到。<br><span class="hljs-number">1</span>-&gt;<span class="hljs-number">1</span>-&gt;<span class="hljs-number">2</span>-&gt;<span class="hljs-number">3</span>-&gt;<span class="hljs-number">4</span>-&gt;<span class="hljs-number">4</span>-&gt;<span class="hljs-number">5</span>-&gt;<span class="hljs-number">6</span><br></code></pre></td></tr></table></figure><p><strong>示例 2：</strong></p><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs inform7">输入：lists = <span class="hljs-comment">[]</span><br>输出：<span class="hljs-comment">[]</span><br></code></pre></td></tr></table></figure><p><strong>示例 3：</strong></p><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs lua">输入：lists = <span class="hljs-string">[[]]</span><br>输出：[]<br></code></pre></td></tr></table></figure><p><strong>提示：</strong></p><ul><li><code>k == lists.length</code></li><li><code>0 &lt;= k &lt;= 10^4</code></li><li><code>0 &lt;= lists[i].length &lt;= 500</code></li><li><code>-10^4 &lt;= lists[i][j] &lt;= 10^4</code></li><li><code>lists[i]</code> 按 <strong>升序</strong> 排列</li><li><code>lists[i].length</code> 的总和不超过 <code>10^4</code></li></ul><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>之前用合并两个有序链表+循环K-1次这种暴力写法来写，最近笔试遇到了一次，发现这种写法又复杂又容易翻车，所以学习了用最小堆来解决，代码更简洁明了</p><ol><li>把第一个元素压入堆中（小顶堆）</li><li>依次出堆，然后把出堆的元素的next压入堆中直到null</li></ol><h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Definition for singly-linked list.</span><br><span class="hljs-comment"> * public class ListNode &#123;</span><br><span class="hljs-comment"> *     int val;</span><br><span class="hljs-comment"> *     ListNode next;</span><br><span class="hljs-comment"> *     ListNode() &#123;&#125;</span><br><span class="hljs-comment"> *     ListNode(int val) &#123; this.val = val; &#125;</span><br><span class="hljs-comment"> *     ListNode(int val, ListNode next) &#123; this.val = val; this.next = next; &#125;</span><br><span class="hljs-comment"> * &#125;</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">mergeKLists</span><span class="hljs-params">(ListNode[] lists)</span> &#123;<br><br>        PriorityQueue&lt;ListNode&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(( a,b) -&gt; a.val - b.val);<br><br>        <span class="hljs-keyword">for</span>(ListNode a : lists)&#123;<br>            <span class="hljs-keyword">if</span>(a != <span class="hljs-literal">null</span>)<br>            list.add(a);<br>        &#125;<br>        <span class="hljs-type">ListNode</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">0</span>);<br>        <span class="hljs-type">ListNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> dummy;<br>        <span class="hljs-keyword">while</span>(!list.isEmpty())&#123;<br>            cur.next = list.poll();<br>            <span class="hljs-keyword">if</span>(cur.next.next != <span class="hljs-literal">null</span>)&#123;<br>                list.add( cur.next.next);<br>            &#125;<br>            cur = cur.next;<br>        &#125;<br>        <span class="hljs-keyword">return</span> dummy.next;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p>时间：n logk</p><p>空间：k</p><h2 id="额外学习"><a href="#额外学习" class="headerlink" title="额外学习"></a>额外学习</h2><p>之前没怎么记过如何把Arrays.sort()改成降序排列，现在学了最小堆如何写lambda表达式之后可知可以这样：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 自定义数据类型</span><br>  <span class="hljs-comment">// 对象数组</span><br>  ListNode[] nodes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>[<span class="hljs-number">3</span>];<br>  Arrays.sort(nodes, (a, b) -&gt; a.val - b.val);<br><br><span class="hljs-comment">// 普通数据类型</span><br>  Integer[] arr2 = &#123;<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>&#125;;<br>  Arrays.sort(arr2, (a, b) -&gt; b - a);<br></code></pre></td></tr></table></figure><span id="more"></span>]]></content>
+    
+    
+    <categories>
+      
+      <category>算法</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>算法</tag>
+      
+      <tag>leetcode</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>java异常</title>
     <link href="/2026/04/04/java%E5%BC%82%E5%B8%B8/"/>
     <url>/2026/04/04/java%E5%BC%82%E5%B8%B8/</url>
